@@ -31,6 +31,8 @@ ALLOWED_HOSTS = ["localhost","127.0.0.1","0.0.0.0"]
 # Application definition
 
 INSTALLED_APPS = [
+    'xadmin',# 加载xadmin模块
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

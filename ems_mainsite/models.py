@@ -5,13 +5,23 @@ from django.contrib.auth.models import User
 
 #企业类型表
 class CompanyType(models.Model):
-    company_type_name = models.CharField(max_length=50, verbose_name="企业产业分类")
+    company_type_name = models.CharField(max_length=50, verbose_name="企业一级产业分类")
 
     def __str__(self):
         return self.company_type_name
 
     class Meta:
-        verbose_name_plural = "企业产业分类"
+        verbose_name_plural = "企业一级产业分类"
+
+class CompanySecondType(models.Model):
+    company_second_type_name = models.CharField(max_length=50, verbose_name="企业二级产业分类")
+    company_type_id = models.ForeignKey(CompanyType, on_delete=models.CASCADE, verbose_name="企业一级产业分类")
+
+    def __str__(self):
+        return self.company_second_type_name
+
+    class Meta:
+        verbose_name_plural = "企业二级产业分类"
 
 
 
@@ -37,7 +47,7 @@ class CompanyTag(models.Model):
 #企业信息表
 class CompanyInfo(models.Model):
     
-     COUNTY_CHOICES = (
+    COUNTY_CHOICES = (
         (1,"个旧市"),
         (2,"开远市"),
         (3,"蒙自市"),
@@ -78,7 +88,8 @@ class CompanyInfo(models.Model):
     )
 
     company_name = models.CharField(max_length=200, verbose_name="企业名称")
-    company_type = models.ForeignKey(CompanyType, on_delete=models.CASCADE, related_name="company_type_id", verbose_name="企业产业分类")
+    company_type = models.ForeignKey(CompanyType, on_delete=models.CASCADE, related_name="company_type_id", verbose_name="企业一级产业分类")
+    company_second_type = models.ForeignKey(CompanySecondType, on_delete=models.CASCADE, related_name="company_second_type_id", verbose_name="企业二级产业分类", default=1)
     company_area = models.IntegerField(choices=COUNTY_CHOICES, verbose_name="企业归属地", default=1)
     company_IDcard = models.CharField(max_length=18, verbose_name="企业统一信用代码", blank=True)
     company_business_scope = models.TextField(max_length=500, verbose_name="企业经营范围", blank=True)
@@ -109,13 +120,13 @@ class CompanyInfo(models.Model):
 class CompanyInfoOverHead(models.Model):
     company_info_id = models.OneToOneField(CompanyInfo, on_delete=models.CASCADE, verbose_name="所属企业")
     company_tag = models.ManyToManyField(CompanyTag, related_name="company_tag_for_company", verbose_name="企业标签")
-    company_employee = models.IntegerField(max_length=5, verbose_name="企业从业人员规模", blank=True)
-    company_senior_staff = models.IntegerField(max_length=5, verbose_name="企业大专及以上学历人数", blank=True)
-    company_job_title = models.IntegerField(max_length=5, verbose_name="企业中级及以上职称人数", blank=True)
+    company_employee = models.IntegerField(verbose_name="企业从业人员规模", blank=True)
+    company_senior_staff = models.IntegerField(verbose_name="企业大专及以上学历人数", blank=True)
+    company_job_title = models.IntegerField(verbose_name="企业中级及以上职称人数", blank=True)
     company_registered_capital = models.IntegerField(verbose_name="企业注册资金", blank=True)
-    company_patents_number = models.IntegerField(max_length=5, verbose_name="企业拥有专利个数", blank=True)
+    company_patents_number = models.IntegerField(verbose_name="企业拥有专利个数", blank=True)
     company_product = models.TextField(verbose_name="企业主要产品/服务", blank=True)
-    company_annual_income = models.IntegerField(verbose_name="企业年收入", blank=True)
+    company_annual_income = models.IntegerField(verbose_name="企业年产值", blank=True)
     company_remark = models.TextField(verbose_name="企业备注", blank=True)
 
     def __str__(self):
@@ -137,7 +148,7 @@ class InternalCircular(models.Model):
     notification_title = models.CharField(max_length=200, verbose_name="通知标题")
     important_level = models.IntegerField(choices=LEVEL_CHOICES, verbose_name="通知重要级别", default=3)
     notification_content = models.TextField(verbose_name="通知内容")
-    notification_author = models.CharField(max_length=50, verbose_name="通知作者")
+    notification_author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="通知作者")
     notification_date = models.DateField(auto_now_add=True, verbose_name="通知生成日期")
     notification_auto_revocation = models.DateField(verbose_name="通知自动撤销日期")
 
