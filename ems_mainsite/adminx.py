@@ -1,9 +1,23 @@
 import xadmin
+from xadmin import views
 from .models import CompanyInfo, CompanyInfoOverHead, CompanyTag, CompanyType, CompanySecondType, InternalCircular
 
-# class ChoiceCompanySecondTypeInline(admin.TabularInline):
-#     model = CompanySecondType
-#     extra = 5
+class BaseSetting:     
+    enable_themes = True  # 开启主题功能
+    use_bootswatch = True
+
+xadmin.site.register(views.BaseAdminView, BaseSetting)
+
+class GlobalSettings:
+    """
+    后台修改
+    """
+    site_title = '企业信息管理系统'
+    site_footer = '红河州中小企业窗口服务平台   企业信息管理系统'
+    menu_style = 'accordion'  # 开启分组折叠
+
+xadmin.site.register(views.CommAdminView, GlobalSettings)
+
 
 # Register your models here.
 class CompanyInfoAdmin(object):
