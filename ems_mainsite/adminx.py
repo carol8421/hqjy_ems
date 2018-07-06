@@ -2,7 +2,7 @@ import xadmin
 from xadmin import views
 from .models import CompanyInfo, CompanyInfoOverHead, CompanyTag, CompanyType, CompanySecondType, InternalCircular
 
-class BaseSetting:     
+class BaseSetting:
     enable_themes = True  # 开启主题功能
     use_bootswatch = True
 

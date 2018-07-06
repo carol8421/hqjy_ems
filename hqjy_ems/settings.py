@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ems_mainsite',
+    'ems_account',
     'ckeditor',
     'ckeditor_uploader',
 ]
@@ -84,7 +85,7 @@ DATABASES = {
         'NAME': 'hqjy_ems',
         'USER': 'root',
         'PASSWORD': 'P@ssword',
-        "HOST": "localhost",
+        "HOST": "192.168.10.201",
     }
 }
 

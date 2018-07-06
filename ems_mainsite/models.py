@@ -107,6 +107,7 @@ class CompanyInfo(models.Model):
     company_cancel = models.IntegerField(choices=BOOL_CHOICES, verbose_name="公司是否注销", default=2)
     #company_tag = models.ManyToManyField(CompanyTag ,related_name="company_info_to_tag")
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="录入系统时间")
+    create_auth = models.CharField(max_length=20, verbose_name="录入信息的用户")
 
     def __str__(self):
         return self.company_name
