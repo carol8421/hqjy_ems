@@ -8,6 +8,6 @@ class UserLevelAdmin(object):
 xadmin.site.register(UserLevel, UserLevelAdmin)
 
 class UserPermissionProfileAdmin(object):
-    list_display = ['user', 'user_level', 'user_phone', 'user_agent', 'user_ip']
+     list_display = ['user', 'user_level', 'user_phone', 'user_agent', 'user_ip']
 
 xadmin.site.register(UserPermissionProfile, UserPermissionProfileAdmin)

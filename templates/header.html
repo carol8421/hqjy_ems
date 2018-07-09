@@ -1,0 +1,21 @@
+{% load staticfiles %}
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <span>企业信息管理系统</span>
+            </a>
+            {% if user.is_authenticated %}
+                <p class="navbar-text">当前用户： <a href="#" class="navbar-link">{{ user.username }}</a></p>
+                <p class="navbar-text navbar-right">姓名： <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
+            {% else %}
+            {% endif %}
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                aria-controls="navbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+    </div>
+</nav>
