@@ -1,6 +1,6 @@
 import xadmin
 from xadmin import views
-from .models import CompanyInfo, CompanyInfoOverHead, CompanyTag, CompanyType, CompanySecondType, InternalCircular
+from .models import CompanyInfo, CompanyInfoOverHead, CompanyTag, CompanyType, CompanySecondType, InternalCircular, SystemBlackList, SystemConfig
 
 class BaseSetting:
     enable_themes = True  # 开启主题功能
@@ -50,3 +50,9 @@ class InternalCircularAdmin(object):
     list_display = ['notification_title', 'important_level', 'notification_content', 'notification_author', 'notification_date', 'notification_auto_revocation']
 
 xadmin.site.register(InternalCircular, InternalCircularAdmin)
+
+
+class SystemConfigAdmin(object):
+    list_display = ['system_name', 'system_database_name', 'system_open_or_close', 'system_online_time']
+    
+xadmin.site.register(SystemConfig, SystemConfigAdmin)

@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'hqjy_ems',
         'USER': 'root',
         'PASSWORD': 'P@ssword',
-        "HOST": "localhost",
+        "HOST": "192.168.10.201",
     }
 }
 
@@ -125,6 +125,11 @@ USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
+
+# session 设置
+SESSION_COOKIE_AGE = 60 * 30 # 30分钟
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True # 关闭浏览器，则COOKIE失效
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

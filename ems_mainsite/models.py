@@ -107,7 +107,7 @@ class CompanyInfo(models.Model):
     company_cancel = models.IntegerField(choices=BOOL_CHOICES, verbose_name="公司是否注销", default=2)
     #company_tag = models.ManyToManyField(CompanyTag ,related_name="company_info_to_tag")
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="录入系统时间")
-    create_auth = models.CharField(max_length=20, verbose_name="录入信息的用户")
+    create_auth = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="录入信息的用户", default=1)
 
     def __str__(self):
         return self.company_name
@@ -159,3 +159,25 @@ class InternalCircular(models.Model):
     class Meta:
         ordering = ['-notification_date', ]
         verbose_name_plural = "内置通知表"
+
+#系统黑名单--企业黑名单
+class SystemBlackList(models.Model):
+    system_black_list = models.ManyToManyField(CompanyInfo, related_name="black_list_for_company", verbose_name="系统黑名单")
+    black_list_datetime = models.DateField(auto_now_add=True, verbose_name="加入黑名单的日期")
+
+    class Meta:
+        ordering = ['-black_list_datetime', ]
+        verbose_name_plural = "企业黑名单"
+
+#系统配置表
+class SystemConfig(models.Model):
+    system_name = models.CharField(max_length=200, verbose_name="系统名称")
+    system_database_name = models.CharField(max_length=200, verbose_name="系统数据库名称")
+    system_open_or_close = models.BooleanField(default=True, verbose_name="系统是否开放")
+    system_online_time = models.DateField(verbose_name="系统上线日期")
+
+    def __str__(self):
+        return "系统名称 : {}".format(self.system_name)
+
+    class Meta:
+        verbose_name_plural = "系统配置"

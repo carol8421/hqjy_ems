@@ -30,7 +30,7 @@ class UserPermissionProfile(models.Model):
     user_ip = models.CharField(max_length=18, blank=True, verbose_name="用户登录IP")
   
     def __str__(self):
-        return self.user
+        return self.user_phone
     
     class Meta:
         verbose_name_plural = "用户附加信息设置"

@@ -24,7 +24,7 @@ urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('', views.index, name='index'),
     path('mainsite/', include('ems_mainsite.urls')),
-    path('ems_account/', include('ems_account.urls')),
+    path('ems-account/', include('ems_account.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -6,9 +6,14 @@
                 <span>企业信息管理系统</span>
             </a>
             {% if user.is_authenticated %}
-                <p class="navbar-text">当前用户： <a href="#" class="navbar-link">{{ user.username }}</a></p>
-                <p class="navbar-text navbar-right">姓名： <a href="#" class="navbar-link">{{ user.first_name }}</a></p>
-            {% else %}
+                <p class="navbar-text">当前用户： <a href="{% url 'userinfo_detail' %}" class="navbar-link">{{ user.username }}</a></p>
+                <p class="navbar-text navbar-right"><a type="button" href="{% url 'user_logout' %}" class="btn btn-danger btn-xs">注销</a></p>
+                
+                {% if user.is_superuser %}
+                    
+                    <p class="navbar-text navbar-right"><a type="button" href="/xadmin/" class="btn btn-warning btn-xs">进入管理后台</a></p>
+                {% endif %}
+                    
             {% endif %}
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
                 aria-controls="navbar">

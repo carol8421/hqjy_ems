@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block title %}
-    工作台 | 首页
+    编辑用户信息
 {% endblock title %}
 
-{% block home-active %}
-    active
-{% endblock home-active %}
-
 {% block content %}
-    <h3 class="home-content">这是 工作台  页面</h3>
+    <div class="row text-center vertical-middle-lg">
+        <p>编辑 {{ user.username }} 用户信息</p>
+        <p><a type="button" href="{% url 'userinfo_edit' %}" class="btn btn-success btn-sm">提交修改</a></p>
+    </div>
 {% endblock content %}
-
+userinfo_edit
 {% block footer %}
     <div id="footer">
         <span>Welcome to visit 企业信息管理系统 &copy;红河州中小企业窗口服务平台 </span>
