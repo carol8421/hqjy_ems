@@ -14,7 +14,7 @@ class CompanyInfoAdmin(admin.ModelAdmin):
 
 @admin.register(CompanyInfoOverHead)
 class CompanyInfoOverHeadAdmin(admin.ModelAdmin):
-    list_display = ['company_info_id', 'company_employee', 'company_senior_staff', 'company_job_title', 'company_registered_capital', 'company_patents_number', 'company_product', 'company_annual_income', 'company_remark']
+    list_display = ['company_info_id', 'company_employee', 'company_senior_staff', 'company_job_title', 'company_patents_number', 'company_product', 'company_annual_income', 'company_remark']
 
 @admin.register(CompanyTag)
 class CompanyTagAdmin(admin.ModelAdmin):

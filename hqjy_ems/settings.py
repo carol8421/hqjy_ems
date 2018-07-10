@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'hqjy_ems',
         'USER': 'root',
         'PASSWORD': 'P@ssword',
-        "HOST": "192.168.10.201",
+        "HOST": "localhost",
     }
 }
 
@@ -146,6 +146,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,"media")
 
 #ckeditor上传文件配置
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CKEDITOR_IMAGE_BACKEND = 'pillow'
 #ckeditor编辑器样式配置
 CKEDITOR_CONFIGS = {
     'default': {

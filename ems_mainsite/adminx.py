@@ -27,7 +27,7 @@ class CompanyInfoAdmin(object):
 xadmin.site.register(CompanyInfo, CompanyInfoAdmin)
 
 class CompanyInfoOverHeadAdmin(object):
-    list_display = ['company_info_id', 'company_employee', 'company_senior_staff', 'company_job_title', 'company_registered_capital', 'company_patents_number', 'company_product', 'company_annual_income', 'company_remark']
+    list_display = ['company_info_id', 'company_employee', 'company_senior_staff', 'company_job_title',  'company_patents_number', 'company_product', 'company_annual_income', 'company_remark']
 
 xadmin.site.register(CompanyInfoOverHead, CompanyInfoOverHeadAdmin)
 

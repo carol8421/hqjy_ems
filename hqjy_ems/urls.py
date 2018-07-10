@@ -23,6 +23,7 @@ from . import views
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('', views.index, name='index'),
+    path('ckeditor', include('ckeditor_uploader.urls')),
     path('mainsite/', include('ems_mainsite.urls')),
     path('ems-account/', include('ems_account.urls')),
 ]

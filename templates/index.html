@@ -8,28 +8,34 @@
 <div class="container">
         <div class="row">
                 <div class="col-md-12">
-                        <h3 class="home-content">{% for user in user  %}{{user.username}}{% endfor %} {% for userprofile in userprofile %}{{ userprofile.user_level }}{% endfor %} 欢迎登陆  </h3>
+                        <h3 class="home-content animated zoomIn">{% for user in user  %}{{user.username}}{% endfor %} {% for userprofile in userprofile %}{{ userprofile.user_level }}{% endfor %} 欢迎登陆  </h3>
                 </div>
                 {% for userprofile in userprofile %}
-                    <div class="col-md-12">
-                        您使用的浏览器：{{ userprofile.user_agent }}
+                    <div class="col-md-8 col-md-offset-2">
+                        <p></p>
                     </div>
                     <div class="col-md-8 col-md-offset-2">
-                        您的IP地址：{{ userprofile.user_ip }}
+                       <p></p>
                     </div>
-                    <div class="col-md-8 col-md-offset-2">
+                    <div class="col-md-8 col-md-offset-2 animated bounceInUp">
                     {% if userprofile.user_level_id == 4 %}
                         <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'index_query' %}">进入查询页</a>
-                        <a type="button" href="{% url 'user_logout' %}" class="btn btn-danger btn-lg btn-block">注销</a></p>
+                        <a type="button"  class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal">注销</a></p>
                     {% else %}
                         <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'index_query' %}">进入查询页</a>
                         <a type="button" class="btn btn-success btn-lg btn-block" href="{% url 'index_workbench' %}">进入工作台</a>
-                        <a type="button" href="{% url 'user_logout' %}" class="btn btn-danger btn-lg btn-block">注销</a></p>
+                        <a type="button"  class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal">注销</a></p>
                     {% endif %}
                     </div>
-                <div class="col-md-8 col-md-offset-2">
+                    <div class="col-md-8 col-md-offset-2">
+                            <p></p>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
                         <p></p>
-                </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2 animated bounceInUp">
+                            {% include "ems_mainsite/notification.html" %}
+                    </div>
                 {% endfor %}
         </div>
     </div>
@@ -37,7 +43,7 @@
 {% endblock content %}
 
 {% block footer %}
-    <div id="footer">
+    <div id="footer" class="animated fadeInUp">
         <span>Welcome to visit 企业信息管理系统 &copy;红河州中小企业窗口服务平台 </span>
         <span> 滇ICP备XXXXXXXXXXXXXXXX</span>
     </div>

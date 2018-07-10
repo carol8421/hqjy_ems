@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 
@@ -92,18 +93,18 @@ class CompanyInfo(models.Model):
     company_second_type = models.ForeignKey(CompanySecondType, on_delete=models.CASCADE, related_name="company_second_type_id", verbose_name="企业二级产业分类", default=1)
     company_area = models.IntegerField(choices=COUNTY_CHOICES, verbose_name="企业归属地", default=1)
     company_IDcard = models.CharField(max_length=18, verbose_name="企业统一信用代码", blank=True)
-    company_business_scope = models.TextField(max_length=500, verbose_name="企业经营范围", blank=True)
-    company_registered_capital = models.CharField(max_length=50, verbose_name="企业注册资金", blank=True)
-    responsible_person = models.CharField(max_length=50, verbose_name="企业法人/负责人姓名")
-    responsible_person_sex = models.IntegerField(choices=SEX_CHOICES, verbose_name="企业法人性别", default=1)
-    responsible_person_age = models.CharField(max_length=2, verbose_name="企业法人年龄", blank=True)
-    responsible_person_politics_status = models.IntegerField(choices=POLITICS_CHOICES, verbose_name="企业法人政治面貌", default=2)
-    responsible_person_education = models.IntegerField(choices=EDUCATION_CHOICES, verbose_name="企业法人文化程度", default=3)
-    contact_name = models.CharField(max_length=50, verbose_name="企业联系人姓名", blank=True)
-    contact_phone = models.CharField(max_length=11, verbose_name="企业联系人电话", blank=True)
-    contact_email = models.EmailField(verbose_name="企业联系人email", blank=True)
-    company_web = models.URLField(verbose_name="企业网站地址", blank=True)
-    contact_address = models.CharField(max_length=200, verbose_name="企业通讯地址", blank=True)
+    company_business_scope = models.TextField(max_length=500, verbose_name="经营范围", blank=True)
+    company_registered_capital = models.CharField(max_length=50, verbose_name="注册资金", blank=True)
+    responsible_person = models.CharField(max_length=50, verbose_name="法人/负责人姓名")
+    responsible_person_sex = models.IntegerField(choices=SEX_CHOICES, verbose_name="法人性别", default=1)
+    responsible_person_age = models.CharField(max_length=2, verbose_name="法人年龄", blank=True)
+    responsible_person_politics_status = models.IntegerField(choices=POLITICS_CHOICES, verbose_name="法人政治面貌", default=2)
+    responsible_person_education = models.IntegerField(choices=EDUCATION_CHOICES, verbose_name="法人文化程度", default=3)
+    contact_name = models.CharField(max_length=50, verbose_name="联系人姓名", blank=True)
+    contact_phone = models.CharField(max_length=11, verbose_name="联系人电话", blank=True)
+    contact_email = models.EmailField(verbose_name="联系人email", blank=True)
+    company_web = models.URLField(verbose_name="网站地址", blank=True)
+    contact_address = models.CharField(max_length=200, verbose_name="通讯地址", blank=True)
     company_cancel = models.IntegerField(choices=BOOL_CHOICES, verbose_name="公司是否注销", default=2)
     #company_tag = models.ManyToManyField(CompanyTag ,related_name="company_info_to_tag")
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="录入系统时间")
@@ -121,14 +122,13 @@ class CompanyInfo(models.Model):
 class CompanyInfoOverHead(models.Model):
     company_info_id = models.OneToOneField(CompanyInfo, on_delete=models.CASCADE, verbose_name="所属企业")
     company_tag = models.ManyToManyField(CompanyTag, related_name="company_tag_for_company", verbose_name="企业标签")
-    company_employee = models.IntegerField(verbose_name="企业从业人员规模", blank=True)
-    company_senior_staff = models.IntegerField(verbose_name="企业大专及以上学历人数", blank=True)
-    company_job_title = models.IntegerField(verbose_name="企业中级及以上职称人数", blank=True)
-    company_registered_capital = models.IntegerField(verbose_name="企业注册资金", blank=True)
+    company_employee = models.IntegerField(verbose_name="从业人员规模", blank=True)
+    company_senior_staff = models.IntegerField(verbose_name="大专及以上学历人数", blank=True)
+    company_job_title = models.IntegerField(verbose_name="中级及以上职称人数", blank=True)
     company_patents_number = models.IntegerField(verbose_name="企业拥有专利个数", blank=True)
-    company_product = models.TextField(verbose_name="企业主要产品/服务", blank=True)
+    company_product = models.TextField(verbose_name="主要产品/服务", blank=True)
     company_annual_income = models.IntegerField(verbose_name="企业年产值", blank=True)
-    company_remark = models.TextField(verbose_name="企业备注", blank=True)
+    company_remark = models.TextField(verbose_name="备注", blank=True)
 
     def __str__(self):
         return self.company_info_id
@@ -148,10 +148,11 @@ class InternalCircular(models.Model):
 
     notification_title = models.CharField(max_length=200, verbose_name="通知标题")
     important_level = models.IntegerField(choices=LEVEL_CHOICES, verbose_name="通知重要级别", default=3)
-    notification_content = models.TextField(verbose_name="通知内容")
-    notification_author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="通知作者")
+    notification_content = RichTextUploadingField(verbose_name="通知内容")
+    notification_author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="通知作者", default=1)
     notification_date = models.DateField(auto_now_add=True, verbose_name="通知生成日期")
     notification_auto_revocation = models.DateField(verbose_name="通知自动撤销日期")
+    notification_revocation_flag = models.BooleanField(verbose_name="主动撤销通知标志", default=False)
 
     def __str__(self):
         return self.notification_title
