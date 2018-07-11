@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'hqjy_ems',
         'USER': 'root',
         'PASSWORD': 'P@ssword',
-        "HOST": "localhost",
+        "HOST": "192.168.10.201",
     }
 }
 

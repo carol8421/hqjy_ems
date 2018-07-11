@@ -1,22 +1,12 @@
 {% load staticfiles %}
 
+<div class="panel panel-info">
+        <div class="list-group">
 {% for notification in notification_list  %}
-    <div class="panel {% if notification.important_level == 1 %}panel-danger{% elif notification.important_level == 2  %}panel-warning{% else %}panel-success{% endif %}">
-            <div class="panel-heading">
-            <h3 class="panel-title">{{ notification.notification_title }}</h3>
-            <span class="text-right">{{ notification.notification_date }}</span>
-            </div>
-            <div class="panel-body">
-                    {{ notification_content | safe}}
-            </div>
-    </div>
+                <a href="#" class="list-group-item {% if notification.important_level == 1 %}list-group-item-danger{% elif notification.important_level == 2  %}list-group-item-warning{% else %}list-group-item-success{% endif %}"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>{{ notification.notification_title }}</a>
 {% empty %}
-    <div class="panel panel-default">
-            <div class="panel-heading">
-            <h3 class="panel-title">系统通知{{ flag }}</h3>
-            </div>
-            <div class="panel-body">
-                   暂时没有通知
-            </div>
-    </div>
+                <a href="#" class="list-group-item list-group-item-info"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>目前没有系统通知</a>
 {% endfor %}
+        </div>
+</div>
+

@@ -47,7 +47,7 @@ class CompanySecondTypeAdmin(object):
 xadmin.site.register(CompanySecondType, CompanySecondTypeAdmin)
 
 class InternalCircularAdmin(object):
-    list_display = ['notification_title', 'important_level', 'notification_content', 'notification_author', 'notification_date', 'notification_auto_revocation']
+    list_display = ['notification_title', 'important_level', 'notification_content', 'notification_author', 'notification_date', 'notification_auto_revocation','notification_revocation_flag']
 
 xadmin.site.register(InternalCircular, InternalCircularAdmin)
 

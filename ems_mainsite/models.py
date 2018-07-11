@@ -152,7 +152,7 @@ class InternalCircular(models.Model):
     notification_author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="通知作者", default=1)
     notification_date = models.DateField(auto_now_add=True, verbose_name="通知生成日期")
     notification_auto_revocation = models.DateField(verbose_name="通知自动撤销日期")
-    notification_revocation_flag = models.BooleanField(verbose_name="主动撤销通知标志", default=False)
+    notification_revocation_flag = models.BooleanField(verbose_name="是否已主动撤销", default=False)
 
     def __str__(self):
         return self.notification_title
