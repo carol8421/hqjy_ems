@@ -16,9 +16,9 @@
             <div class="col-md-4 col-md-offset-4 animated zoomIn">
                 <div class="panel panel-info">
                 {% for user_level in user_level %}
-                    <div class="panel-heading">用户角色：{{ user_level.level_name }}</div>
+                    <div class="panel-heading">用户角色：<span class="text-warning">{{ user_level.level_name }}</span></div>
                     <div class="panel-body">
-                            <p>{{ user_level.level_describe }}</p>
+                            <p class="text-muted">{{ user_level.level_describe }}</p>
                 {% endfor %}
                     </div>
                   
@@ -27,8 +27,8 @@
                         <li class="list-group-item">姓名：{{ user.first_name }}</li>
                         <li class="list-group-item">手机：{{ user_profile.user_phone }}</li>
                         <li class="list-group-item">邮箱：{{ user.email }}</li>
-                        <li class="list-group-item">登录浏览器：{{ user_profile.user_agent }}</li>
-                        <li class="list-group-item">登录IP：{{ user_profile.user_ip }}</li>
+                        <li class="list-group-item text-warning">登录浏览器：{{ user_profile.user_agent }}</li>
+                        <li class="list-group-item text-danger">登录IP：{{ user_profile.user_ip }}</li>
                     </ul>
                   </div>
                   
@@ -37,7 +37,6 @@
 
 
     <div class="row text-center vertical-middle-lg">
-        <p>{{ user.username }} 的用户信息</p>
         <p><a type="button" href="{% url 'userinfo_edit' %}" class="btn btn-success btn-sm">修改用户信息</a></p>
     </div>
 {% endblock content %}

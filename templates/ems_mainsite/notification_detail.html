@@ -10,10 +10,9 @@
                     <div class="col-md-8 col-md-offset-2">
                             <div class="page-header">
                                     <h1>{{ current_notification.notification_title }}<br><small>系统通知 </small></h1>
-                                    <span class="label {% if notification.important_level == 1 %}label-danger{% elif notification.important_level == 2  %}label-warning{% else %}label-success{% endif %}">{% if notification.important_level == 1 %}特别重要{% elif notification.important_level == 2  %}非常重要{% else %}一般重要{% endif %}</span>
-                                    <span class="label label-default">{{ current_notification.notification_author }}</span>
-                                    <span class="label label-primary">{{ current_notification.notification_date }}</span>
-                                    <span class="label label-danger">{{ current_notification.notification_auto_revocation }}</span>
+                                    <span class="label {% if current_notification.important_level == 1 %}label-danger{% elif current_notification.important_level == 2  %}label-warning{% else %}label-success{% endif %}">通知重要程度：{% if current_notification.important_level == 1 %}特别重要{% elif current_notification.important_level == 2  %}非常重要{% else %}一般重要{% endif %}</span>
+                                    <span class="label label-default">作者：{{ current_notification.notification_author }}</span>
+                                    <span class="label label-primary">通知期限：{{ current_notification.notification_date }} - {{ current_notification.notification_auto_revocation }}</span>
                             </div>
                     </div>
                     <div class="col-md-8 col-md-offset-2">
