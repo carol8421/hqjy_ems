@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    系统通知
+{% endblock title %}
+
+{% block content %}
+<div class="container animated bounceInUp">
+        <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                            <div class="page-header">
+                                    <h1>{{ current_notification.notification_title }}<br><small>系统通知 </small></h1>
+                                    <span class="label {% if notification.important_level == 1 %}label-danger{% elif notification.important_level == 2  %}label-warning{% else %}label-success{% endif %}">{% if notification.important_level == 1 %}特别重要{% elif notification.important_level == 2  %}非常重要{% else %}一般重要{% endif %}</span>
+                                    <span class="label label-default">{{ current_notification.notification_author }}</span>
+                                    <span class="label label-primary">{{ current_notification.notification_date }}</span>
+                                    <span class="label label-danger">{{ current_notification.notification_auto_revocation }}</span>
+                            </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                            <div class="panel panel-default">
+                                    <div class="panel-body">
+                                            {{ current_notification.notification_content | safe }}
+                                    </div>
+                                </div>
+                    </div>
+                    <div class="col-md-8 col-md-offset-2">
+                            <a href="/" class="btn btn-info btn-block">返回首页</a>
+                    </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block footer %}
+    <div id="footer" class="animated fadeInUp">
+        <span>Welcome to visit 企业信息管理系统 &copy;红河州中小企业窗口服务平台 </span>
+        <span> 滇ICP备XXXXXXXXXXXXXXXX</span>
+    </div>
+{% endblock footer %}

@@ -17,7 +17,7 @@
                     <div class="col-md-8 col-md-offset-2">
                        <p></p>
                     </div>
-                    <div class="col-md-8 col-md-offset-2 animated bounceInUp">
+                    <div class="col-md-8 col-md-offset-2 animated zoomIn">
                     {% if userprofile.user_level_id == 4 %}
                         <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'index_query' %}">进入查询页</a>
                         <a type="button"  class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal">注销</a></p>
@@ -33,9 +33,12 @@
                     <div class="col-md-8 col-md-offset-2">
                         <p></p>
                     </div>
-                    <div class="col-md-8 col-md-offset-2 animated bounceInUp">
+                    {% if userprofile.user_level_id == 4 %}
+                    {% else %}
+                    <div class="col-md-4 col-md-offset-4 animated bounceInUp">
                             {% include "ems_mainsite/notification.html" %}
                     </div>
+                    {% endif %}
                 {% endfor %}
         </div>
     </div>

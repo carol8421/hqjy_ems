@@ -11,5 +11,5 @@ from . import views
 urlpatterns = [
     path('query/', views.index_query, name='index_query'),
     path('workbench/', views.index_workbench, name='index_workbench'),
-    path('notification/', views.notification_index, name='notification'),
+    path('notification/<int:Internalcircular_pk>', views.notification_detail, name='notification_detail'),
 ]

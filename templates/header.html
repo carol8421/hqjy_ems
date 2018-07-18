@@ -6,7 +6,7 @@
                 <span>企业信息管理系统</span>
             </a>
             {% if user.is_authenticated %}
-                <p class="navbar-text">当前用户： <a href="{% url 'userinfo_detail' %}" class="navbar-link">{{ user.username }}</a></p>
+                <p class="navbar-text">当前用户： <a href="{% url 'userinfo_detail'  user.id %}" class="navbar-link">{{ user.username }}</a></p>
                 <p class="navbar-text navbar-right"><a type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal">注销</a></p>
                 
                 {% if user.is_superuser %}

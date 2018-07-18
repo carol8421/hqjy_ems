@@ -12,6 +12,6 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('login/', views.user_login, name="user_login"),
     path('logout/', auth_views.logout, {"template_name": "ems_account/logout.html"}, name="user_logout"),
-    path('userinfo-detail/', views.userinfo_detail, name="userinfo_detail"),
+    path('userinfo-detail/<int:user_id>', views.userinfo_detail, name="userinfo_detail"),
     path('userinfo-edit/', views.userinfo_edit, name="userinfo_edit"),
 ]

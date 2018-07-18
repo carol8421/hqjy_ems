@@ -1,12 +1,19 @@
 {% load staticfiles %}
 
-<div class="panel panel-info">
-        <div class="list-group">
-{% for notification in notification_list  %}
-                <a href="#" class="list-group-item {% if notification.important_level == 1 %}list-group-item-danger{% elif notification.important_level == 2  %}list-group-item-warning{% else %}list-group-item-success{% endif %}"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>{{ notification.notification_title }}</a>
-{% empty %}
-                <a href="#" class="list-group-item list-group-item-info"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>目前没有系统通知</a>
-{% endfor %}
+<div class="panel panel-default">
+        <div class="panel-heading"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 系统通知</div>
+            <div class="panel-body">
+                <div class="list-group">
+                    {% for notification in notification_list  %}
+                                <span class="label {% if notification.important_level == 1 %}label-danger{% elif notification.important_level == 2  %}label-warning{% else %}label-success{% endif %}">{% if notification.important_level == 1 %}特别重要{% elif notification.important_level == 2  %}非常重要{% else %}一般重要{% endif %}</span>
+                                    <a href="{% url 'notification_detail' notification.pk %}" class="list-group-item {% if notification.important_level == 1 %}list-group-item-danger{% elif notification.important_level == 2  %}list-group-item-warning{% else %}list-group-item-success{% endif %}"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>{{ notification.notification_title  | striptags | truncatechars:20 }} </a>
+                                    {% if forloop.counter <= 2 %}
+                                        <br>
+                                    {% endif %}
+                                    
+                    {% empty %}
+                                    <a href="#" class="list-group-item list-group-item-info"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span>目前没有系统通知</a>
+                    {% endfor %}
+                </div>
         </div>
 </div>
-

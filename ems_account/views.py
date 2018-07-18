@@ -15,11 +15,12 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from .forms import LoginForm
-from .models import UserPermissionProfile
+from .models import UserPermissionProfile, UserLevel
+from hqjy_ems.check_system import check_system_open
 
 # Create your views here.
 
-
+@check_system_open(redirect='/system_maintenance/')
 def user_login(request):
     context = {}
     if request.method == "POST":
@@ -51,12 +52,19 @@ def user_login(request):
     return render(request, 'ems_account/login.html', context)
 
 @login_required(login_url='user_login')
-def userinfo_detail(request):
+@csrf_exempt
+@check_system_open(redirect='/system_maintenance/')
+def userinfo_detail(request, user_id):
+    user_profile = UserPermissionProfile.objects.get(user_id=user_id)
+    user_level = UserLevel.objects.filter(pk=user_profile.user_level_id)
     context = {}
+    context['user_profile'] = user_profile
+    context['user_level'] = user_level
     return render(request, 'ems_account/userinfo_detail.html', context)
 
 @login_required(login_url='user_login')
 @csrf_exempt
+@check_system_open(redirect='/system_maintenance/')
 def userinfo_edit(request):
     context = {}
     return render(request, 'ems_account/userinfo_edit.html', context)
