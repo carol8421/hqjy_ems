@@ -15,7 +15,7 @@ body.base-body {
     margin-top: 5em;
     /* margin-bottom: 2em;
     padding-bottom: 1em; */
-    /*border-bottom: 1px solid #eee;*/
+    /* border-bottom: 1px solid #eee; */
 }
 
 h3.home-content {
@@ -72,9 +72,28 @@ div.workbench-top {
 
 #footer {  
     position: absolute;  
-    bottom: 0;  
+    bottom: 0; 
     padding: 10px 0;  
     background-color: #AAA;  
     width: 100%;
     text-align: center;  
+    font-size: 16px;
+    height: 50px; 
     } 
+
+
+    
+    /* #footer{
+        position:absolute;
+        width:100%;
+        background-color: rgb(163, 163, 163);
+        color:#eee;
+        padding: 10px 0;  
+        text-align: center;
+        font-size: 16px;
+        height: 50px; 
+    }
+    
+    #footer span{
+        line-height: 50px;
+    } */

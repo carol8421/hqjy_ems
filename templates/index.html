@@ -17,14 +17,14 @@
                     <div class="col-md-8 col-md-offset-2">
                        <p></p>
                     </div>
-                    <div class="col-md-8 col-md-offset-2 animated zoomIn">
+                    <div class="col-md-8 col-md-offset-2 ">
                     {% if userprofile.user_level_id == 4 %}
-                        <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'index_query' %}">进入查询页</a>
-                        <a type="button"  class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal">注销</a></p>
+                        <a type="button" class="btn btn-primary btn-lg btn-block animated zoomIn delay-1s" href="{% url 'index_query' %}">进入查询页</a>
+                        <a type="button"  class="btn btn-danger btn-lg btn-block animated zoomIn delay-2s" data-toggle="modal" data-target="#myModal">注销</a></p>
                     {% else %}
-                        <a type="button" class="btn btn-primary btn-lg btn-block" href="{% url 'index_query' %}">进入查询页</a>
-                        <a type="button" class="btn btn-success btn-lg btn-block" href="{% url 'index_workbench' %}">进入工作台</a>
-                        <a type="button"  class="btn btn-danger btn-lg btn-block" data-toggle="modal" data-target="#myModal">注销</a></p>
+                        <a type="button" class="btn btn-primary btn-lg btn-block animated zoomIn delay-1s" href="{% url 'index_query' %}">进入查询页</a>
+                        <a type="button" class="btn btn-success btn-lg btn-block animated zoomIn delay-2s" href="{% url 'index_workbench' %}">进入工作台</a>
+                        <a type="button"  class="btn btn-danger btn-lg btn-block animated zoomIn delay-5s" data-toggle="modal" data-target="#myModal">注销</a></p>
                     {% endif %}
                     </div>
                     <div class="col-md-8 col-md-offset-2">
@@ -44,10 +44,3 @@
     </div>
 
 {% endblock content %}
-
-{% block footer %}
-    <div id="footer" class="animated fadeInUp">
-        <span>Welcome to visit 企业信息管理系统 &copy;红河州中小企业窗口服务平台 </span>
-        <span> 滇ICP备XXXXXXXXXXXXXXXX</span>
-    </div>
-{% endblock footer %}
