@@ -158,7 +158,7 @@ class InternalCircular(models.Model):
         return self.notification_title
 
     class Meta:
-        ordering = ['-notification_date', ]
+        ordering = ['-notification_date', '-notification_auto_revocation']
         verbose_name_plural = "内置通知表"
 
 #系统黑名单--企业黑名单

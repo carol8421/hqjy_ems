@@ -30,7 +30,7 @@ def index(request):
     today = timezone.now().date()
     # 取得自动撤销日期大于当天的通知
     notification_list = InternalCircular.objects.filter(
-        notification_auto_revocation__gt=today, notification_revocation_flag=False)
+        notification_auto_revocation__gt=today, notification_revocation_flag=False)[:3]
 
     context['user'] = user
     context['userprofile'] = userprofile

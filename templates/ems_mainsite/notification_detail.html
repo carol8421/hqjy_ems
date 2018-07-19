@@ -24,6 +24,13 @@
                     </div>
                     <div class="col-md-8 col-md-offset-2">
                             <a href="/" class="btn btn-info btn-block">返回首页</a>
+                            
+                            {% if userprofile.user_level_id == 4 %}
+                                    
+                            {% else %}
+                                <a href="{% url 'index_workbench' %}" class="btn btn-warning btn-block">返回工作台</a>
+                            {% endif %}
+                                    
                     </div>
         </div>
     </div>

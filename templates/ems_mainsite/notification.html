@@ -7,7 +7,7 @@
                     {% for notification in notification_list  %}
                                 <span class="label {% if notification.important_level == 1 %}label-danger{% elif notification.important_level == 2  %}label-warning{% else %}label-success{% endif %}">{% if notification.important_level == 1 %}特别重要{% elif notification.important_level == 2  %}非常重要{% else %}一般重要{% endif %}</span>
                                     <a href="{% url 'notification_detail' notification.pk %}" class="list-group-item {% if notification.important_level == 1 %}list-group-item-danger{% elif notification.important_level == 2  %}list-group-item-warning{% else %}list-group-item-success{% endif %}"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>{{ notification.notification_title  | striptags | truncatechars:20 }} </a>
-                                    {% if forloop.counter <= 2 %}
+                                    {% if forloop.counter <= 3 %}
                                         <br>
                                     {% endif %}
                                     

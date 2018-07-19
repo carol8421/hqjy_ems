@@ -1,35 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Author: warlock921 
-# @Date: 2018-07-18 19:42:56 
-# @Last Modified by:   warlock921 
-# @Last Modified time: 2018-07-18 19:42:56 
+# @Author: warlock921
+# @Date: 2018-07-18 19:42:56
+# @Last Modified by:   warlock921
+# @Last Modified time: 2018-07-18 19:42:56
 
 from functools import wraps
 from django.http import HttpResponseRedirect, Http404
 from ems_mainsite.models import SystemConfig
 
 
-# def check_system_open():
-#     system_config = SystemConfig.objects.all().values()[0]
-
-#     if system_config.get("system_open_or_close"):
-#         print('系统开放中！')
-#         return HttpResponseRedirect("/")
-#     else:
-#         print('系统关闭！')
-#         return HttpResponseRedirect("system_maintenance.html")
-
-
-def check_system_open(func=None, redirect=None):  
-    def decorator(func):  
-        @wraps(func)  
+def check_system_open(func=None, redirect=None):
+    def decorator(func):
+        @wraps(func)
         def returned_wrapper(request, *args, **kwargs):
             system_config = SystemConfig.objects.all().values()[0]
-            if system_config.get("system_open_or_close") == False:  
+            if system_config.get("system_open_or_close") == False:
                 return HttpResponseRedirect(redirect)
             else:
                 return func(request, *args, **kwargs)
-        return returned_wrapper  
+        return returned_wrapper
     return decorator
-        

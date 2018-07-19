@@ -8,7 +8,7 @@
 <div class="container">
         <div class="row">
                 <div class="col-md-12">
-                        <h3 class="home-content animated zoomIn">{% for user in user  %}{{user.username}}{% endfor %} {% for userprofile in userprofile %}{{ userprofile.user_level }}{% endfor %} 欢迎登陆  </h3>
+                        <h3 class="home-content animated zoomIn">{% for user in user  %}<a href="{% url 'userinfo_detail'  user.id %}" class="navbar-link">{{ user.username }}</a>{% endfor %} {% for userprofile in userprofile %}{{ userprofile.user_level }}{% endfor %} 欢迎登陆  </h3>
                 </div>
                 {% for userprofile in userprofile %}
                     <div class="col-md-8 col-md-offset-2">
