@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from ckeditor_uploader.fields import RichTextUploadingField
+from import_export import resources
 
-# Create your models here.
 
 #企业类型表
 class CompanyType(models.Model):
@@ -24,26 +24,6 @@ class CompanySecondType(models.Model):
     class Meta:
         verbose_name_plural = "企业二级产业分类"
 
-
-
-#标签表
-class CompanyTag(models.Model):
-    
-    LEVEL_CHOICES = (
-        (1,"特别重要"),
-        (2,"非常重要"),
-        (3,"一般重要"),
-    )
-
-    tag_name = models.CharField(max_length=50, verbose_name="标签名称")
-    tag_important_level = models.IntegerField(choices=LEVEL_CHOICES, verbose_name="重要级别", default=3)
-
-    def __str__(self):
-        return self.tag_name
-    
-    class Meta:
-        ordering = ['-tag_important_level', ]
-        verbose_name_plural = "企业标签"
 
 #企业信息表
 class CompanyInfo(models.Model):
@@ -89,7 +69,7 @@ class CompanyInfo(models.Model):
     )
 
     company_name = models.CharField(max_length=200, verbose_name="企业名称")
-    company_type = models.ForeignKey(CompanyType, on_delete=models.CASCADE, related_name="company_type_id", verbose_name="企业一级产业分类")
+    company_type = models.ForeignKey(CompanyType, on_delete=models.CASCADE, related_name="company_type_id", verbose_name="企业一级产业分类", default=1)
     company_second_type = models.ForeignKey(CompanySecondType, on_delete=models.CASCADE, related_name="company_second_type_id", verbose_name="企业二级产业分类", default=1)
     company_area = models.IntegerField(choices=COUNTY_CHOICES, verbose_name="企业归属地", default=1)
     company_IDcard = models.CharField(max_length=18, verbose_name="企业统一信用代码", blank=True)
@@ -117,6 +97,25 @@ class CompanyInfo(models.Model):
         ordering = ['-create_time', ]
         verbose_name_plural = "企业基础信息"
 
+#标签表
+class CompanyTag(models.Model):
+    
+    LEVEL_CHOICES = (
+        (1,"特别重要"),
+        (2,"非常重要"),
+        (3,"一般重要"),
+    )
+
+    tag_name = models.CharField(max_length=50, verbose_name="标签名称")
+    tag_important_level = models.IntegerField(choices=LEVEL_CHOICES, verbose_name="重要级别", default=3)
+    company_info = models.ForeignKey(CompanyInfo, on_delete=models.CASCADE, related_name='company_info_tag', verbose_name='企业基础信息')
+
+    def __str__(self):
+        return self.tag_name
+    
+    class Meta:
+        ordering = ['-tag_important_level', ]
+        verbose_name_plural = "企业标签"
 
 #企业附加信息表
 class CompanyInfoOverHead(models.Model):
