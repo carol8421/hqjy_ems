@@ -108,7 +108,7 @@ class CompanyTag(models.Model):
 
     tag_name = models.CharField(max_length=50, verbose_name="标签名称")
     tag_important_level = models.IntegerField(choices=LEVEL_CHOICES, verbose_name="重要级别", default=3)
-    company_info = models.ForeignKey(CompanyInfo, on_delete=models.CASCADE, related_name='company_info_tag', verbose_name='企业基础信息')
+    #company_info = models.ForeignKey(CompanyInfo, on_delete=models.CASCADE, related_name='company_info_tag', verbose_name='企业基础信息')
 
     def __str__(self):
         return self.tag_name

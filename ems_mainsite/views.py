@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
+from django.core import serializers
 from ems_account.models import UserPermissionProfile
-from .models import InternalCircular
+from .models import InternalCircular, CompanyType, CompanySecondType
 from hqjy_ems.check_system import check_system_open
 from .froms import CompanyInfoForm, CompanyInfoOverHeadForm
 
@@ -57,3 +59,12 @@ def notification_detail(request, Internalcircular_pk):
     context = {}
     context['current_notification'] = current_notification
     return render(request, "ems_mainsite/notification_detail.html", context)
+
+
+@login_required(login_url='user_login')
+@check_system_open(redirect='/system_maintenance/')
+def get_second_company_type_data(request):
+    company_type_id = request.POST.get('company_type_id')
+    company_second_type = CompanySecondType.objects.filter(company_type_id=company_type_id)
+    json_data = serializers.serialize("json", company_second_type)
+    return HttpResponse(json_data,content_type="application/json")

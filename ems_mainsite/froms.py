@@ -79,7 +79,7 @@ class CompanyInfoForm(forms.ModelForm):
     # 使用ModelForm时的内部类
     class Meta:
         model = CompanyInfo
-        exclude = ['company_cancel', 'create_time', 'create_auth']
+        exclude = ['company_type', 'company_second_type', 'company_cancel', 'create_time', 'create_auth']
     
     #效验公司名称是否存在
     def clean_company_name(self):
