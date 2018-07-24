@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.urls import reverse
 from django.utils import timezone
@@ -60,11 +61,23 @@ def notification_detail(request, Internalcircular_pk):
     context['current_notification'] = current_notification
     return render(request, "ems_mainsite/notification_detail.html", context)
 
-
+#获取企业一级分类信息-返回Json数据
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
-def get_second_company_type_data(request):
+@csrf_exempt
+def get_company_type_data(request):
+    company_type = CompanyType.objects.all()
+    json_data = serializers.serialize("json", company_type)
+    return HttpResponse(json_data,content_type="application/json")
+
+#获取企业二级分类信息-返回Json数据
+@login_required(login_url='user_login')
+@check_system_open(redirect='/system_maintenance/')
+@csrf_exempt
+def get_company_second_type_data(request):
     company_type_id = request.POST.get('company_type_id')
     company_second_type = CompanySecondType.objects.filter(company_type_id=company_type_id)
+    print(company_second_type)
     json_data = serializers.serialize("json", company_second_type)
     return HttpResponse(json_data,content_type="application/json")
+

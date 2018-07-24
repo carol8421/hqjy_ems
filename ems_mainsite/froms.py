@@ -53,11 +53,9 @@ class CompanyInfoForm(forms.ModelForm):
         (2,"否"),
     )
 
-    COMPANY_TYPE = CompanyType.objects.all()
-
     company_area = forms.ChoiceField(label="企业归属地", choices=COUNTY_CHOICES, widget=forms.Select(attrs={'class':"form-control"}))
     company_name = forms.CharField(label="企业名称", error_messages={'required':'企业名称不能为空'}, widget = forms.TextInput(attrs={'placeholder':"请输入企业全称",'class':"form-control"}))
-    company_type = forms.ModelChoiceField(label="企业一级分类", queryset=COMPANY_TYPE, empty_label='--请选择企业一级产业分类--', widget=forms.Select(attrs={'class':"form-control"}))
+    company_type = forms.ChoiceField(label="企业一级分类", widget=forms.Select(attrs={'class':"form-control"}))
     company_second_type = forms.ChoiceField(label="企业二级分类",  widget=forms.Select(attrs={'class':"form-control"}))
     company_IDcard = forms.CharField(required=False, label="企业统一信用代码", error_messages={'required':'企业统一信用代码'}, widget = forms.TextInput(attrs={'placeholder':"请输入企业统一信用代码",'class':"form-control"}))
     company_business_scope = forms.CharField(required=False, label="经营范围", widget=forms.Textarea(attrs={'class':"form-control",'rows':"3"}))
@@ -79,7 +77,7 @@ class CompanyInfoForm(forms.ModelForm):
     # 使用ModelForm时的内部类
     class Meta:
         model = CompanyInfo
-        exclude = ['company_type', 'company_second_type', 'company_cancel', 'create_time', 'create_auth']
+        exclude = ['company_second_type', 'company_cancel', 'create_time', 'create_auth']
     
     #效验公司名称是否存在
     def clean_company_name(self):
