@@ -5,7 +5,7 @@
 
             <div class="form-group">
                     <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.company_area.id_for_label}}">{{company_info.company_area.label}}</label>
+                    <label class="col-sm-3 control-label focus" for="{{company_info.company_area.id_for_label}}">{{company_info.company_area.label}}</label>
                     <div class="col-sm-7">
                         {{ company_info.company_area }}
                         <p class="text-danger">{{ company_info.company_area.errors.as_text }}</p>
@@ -180,6 +180,12 @@
                     </div>
             </div>
 
+            <!-- Button -->
+            <hr>
+            <div class="col-sm-12 text-center">
+                <a type="button" class="btn btn-danger" href="">重新填写</a>
+                <input type="submit" class="btn btn-success" value="提交信息" />
+            </div>
       </div>
 </form>
 
@@ -239,19 +245,19 @@
 	    data:{
 		        cs_type : [],
         },
-        methods:{
-            details:function loadsecond(id){
-                        $.ajax({
-                        type:"post",
-                        url:"{% url 'get_company_second_type_data' %}",
-                        data:{"company_type_id":id},
-                        dataType:"json",
-                        success:function(data){
-                                //id为0时为父类
-                            vm2.cs_type = data;
-                            }		
-                        });	
-                    }
-        },
+        // methods:{
+        //     details:function loadsecond(id){
+        //                 $.ajax({
+        //                 type:"post",
+        //                 url:"{% url 'get_company_second_type_data' %}",
+        //                 data:{"company_type_id":id},
+        //                 dataType:"json",
+        //                 success:function(data){
+        //                         //id为0时为父类
+        //                     vm2.cs_type = data;
+        //                     }		
+        //                 });	
+        //             }
+        // },
 	});	
   </script>

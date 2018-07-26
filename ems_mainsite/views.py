@@ -21,7 +21,7 @@ def index_query(request):
     context = {}
     return render(request, "index_query.html", context)
 
-
+#工作台主页视图
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
 def index_workbench(request):
@@ -52,7 +52,7 @@ def index_workbench(request):
         return render(request, "index_workbench.html", context)
 
     
-
+#显示指定的通知视图
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
 def notification_detail(request, Internalcircular_pk):
@@ -77,7 +77,16 @@ def get_company_type_data(request):
 def get_company_second_type_data(request):
     company_type_id = request.POST.get('company_type_id')
     company_second_type = CompanySecondType.objects.filter(company_type_id=company_type_id)
-    print(company_second_type)
+    #print(company_second_type)
     json_data = serializers.serialize("json", company_second_type)
     return HttpResponse(json_data,content_type="application/json")
 
+#提交录入数据视图
+@login_required(login_url='user_login')
+@check_system_open(redirect='/system_maintenance/')
+@csrf_exempt
+def input_data_submit(request):
+    if request.method == 'POST':
+        company_info_form = CompanyInfoForm(request.POST)
+        print(company_info_form)
+    

@@ -16,20 +16,21 @@
                     <div>
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs nav-justified" role="tablist">
+                            <li role="presentation" class="active"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">录入数据</a></li>
                           {% if user_level == 1 or user_level == 2 %}
-                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询、修改、删除数据</a></li>
+                            <li role="presentation"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询、修改、删除数据</a></li>
                           {% else %}
-                            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询、修改数据</a></li>
+                            <li role="presentation"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询、修改数据</a></li>
                           {% endif %}                           
-                          <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">录入数据</a></li>
+                          
                           <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">系统通知消息</a></li>
                           <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">工作台设置</a></li> -->
                         </ul>
                         
                         <!-- Tab panes -->
                         <div class="tab-content col-md-10 col-md-offset-1">
-                          <div role="tabpanel" class="tab-pane fade in active workbench-top" id="home">{% include "ems_mainsite/workbench/search_data.html" %}</div>
-                          <div role="tabpanel" class="tab-pane fade workbench-top" id="profile">{% include "ems_mainsite/workbench/data_input.html" %}</div>
+                          <div role="tabpanel" class="tab-pane fade in active workbench-top" id="profile">{% include "ems_mainsite/workbench/data_input.html" %}</div>
+                          <div role="tabpanel" class="tab-pane fade workbench-top" id="home">{% include "ems_mainsite/workbench/search_data.html" %}</div>
                           <div role="tabpanel" class="tab-pane fade workbench-top" id="messages">{% include "ems_mainsite/notification.html" %}</div>
                           <!-- <div role="tabpanel" class="tab-pane fade workbench-top" id="settings">.发射点发射得分.</div> -->
                         </div>
