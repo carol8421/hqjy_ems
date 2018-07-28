@@ -15,4 +15,5 @@ urlpatterns = [
     path('get-type-data/', views.get_company_type_data, name='get_company_type_data'),
     path('get-second-type-data/', views.get_company_second_type_data, name='get_company_second_type_data'),
     path('input-data-submit/', views.input_data_submit, name='input_data_submit'),
+    path('input-overhead-data-submit/<int:ci_id>', views.input_overhead_data_submit, name='input_overhead_data_submit'),
 ]

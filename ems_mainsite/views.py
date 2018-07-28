@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.utils import timezone
 from django.core import serializers
@@ -38,11 +38,12 @@ def index_workbench(request):
     if request.method == 'GET':
         company_info = CompanyInfoForm()
         company_Info_over_head = CompanyInfoOverHeadForm()
+        context['company_info'] = company_info
+        context['company_Info_over_head'] = company_Info_over_head
 
     context['user_level'] = user_level
     context['notification_list'] = notification_list
-    context['company_info'] = company_info
-    context['company_Info_over_head'] = company_Info_over_head
+    
 
 
     #判断用户级别，是否有使用workbench的权限
@@ -81,12 +82,47 @@ def get_company_second_type_data(request):
     json_data = serializers.serialize("json", company_second_type)
     return HttpResponse(json_data,content_type="application/json")
 
-#提交录入数据视图
+#提交录入用户主信息数据视图
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
 @csrf_exempt
 def input_data_submit(request):
     if request.method == 'POST':
         company_info_form = CompanyInfoForm(request.POST)
-        print(company_info_form)
-    
+        print(request.POST)
+        print(company_info_form.is_valid())
+        company_type_id = request.POST.get('company_type')
+        company_second_type_id = request.POST.get('company_second_type')
+        print(company_type_id, company_second_type_id)
+        if company_info_form.is_valid():
+            new_company_info_form = company_info_form.save(commit=False)
+            new_company_info_form.company_name = company_info_form.cleaned_data['company_name']
+            new_company_info_form.company_type_id = company_type_id
+            new_company_info_form.company_second_type_id = company_second_type_id
+            new_company_info_form.company_IDcard = company_info_form.cleaned_data['company_IDcard']
+            new_company_info_form.contact_phone = company_info_form.cleaned_data['contact_phone']
+            new_company_info_form.save()
+            #转换页面视图至用户附加信息
+            ci_id = new_company_info_form.pk
+            return HttpResponseRedirect(reverse('input_overhead_data_submit', args=[ci_id]))
+        else:
+            context = {}
+            context ['company_info'] = company_info_form
+            return render(request, 'index_workbench.html', context)
+
+#提交录入用户附加信息数据视图
+@login_required(login_url='user_login')
+@check_system_open(redirect='/system_maintenance/')
+@csrf_exempt
+def input_overhead_data_submit(request, ci_id):
+    context = {}
+    if request.method == 'GET':
+         company_overhead_info_form = CompanyInfoOverHeadForm()
+         ci_id = ci_id
+         context['ci_id'] = ci_id
+         context['company_info'] = company_overhead_info_form
+         return render(request, "index_workbench.html", context)
+    elif request.method == 'POST':
+        pass
+    else:
+        pass

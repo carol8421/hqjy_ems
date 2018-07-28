@@ -55,8 +55,8 @@ class CompanyInfoForm(forms.ModelForm):
 
     company_area = forms.ChoiceField(label="企业归属地", choices=COUNTY_CHOICES, widget=forms.Select(attrs={'class':"form-control"}))
     company_name = forms.CharField(label="企业名称", error_messages={'required':'企业名称不能为空'}, widget = forms.TextInput(attrs={'placeholder':"请输入企业全称",'class':"form-control"}))
-    company_type = forms.ChoiceField(label="企业一级分类", widget=forms.Select(attrs={'class':"form-control"}))
-    company_second_type = forms.ChoiceField(label="企业二级分类",  widget=forms.Select(attrs={'class':"form-control"}))
+    #company_type = forms.CharField(label="企业一级分类", widget=forms.Select(attrs={'class':"form-control"}))
+   # company_second_type = forms.CharField(label="企业二级分类",  widget=forms.Select(attrs={'class':"form-control"}))
     company_IDcard = forms.CharField(required=False, label="企业统一信用代码", error_messages={'required':'企业统一信用代码'}, widget = forms.TextInput(attrs={'placeholder':"请输入企业统一信用代码",'class':"form-control"}))
     company_business_scope = forms.CharField(required=False, label="经营范围", widget=forms.Textarea(attrs={'class':"form-control",'rows':"3"}))
     company_registered_capital = forms.CharField(required=False, label="注册资金", error_messages={'required':'注册资金不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
@@ -66,7 +66,7 @@ class CompanyInfoForm(forms.ModelForm):
     responsible_person_politics_status = forms.ChoiceField(required=False, label="法人政治面貌", choices=POLITICS_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
     responsible_person_education = forms.ChoiceField(required=False, label="法人文化程度", choices=EDUCATION_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
     contact_name = forms.CharField(required=False, label="联系人姓名", error_messages={'required':'联系人姓名不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
-    contact_phone = forms.CharField(required=False, label="联系人电话", error_messages={'required':'联系人电话不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
+    contact_phone = forms.CharField(required=False, max_length=11, label="联系人电话", error_messages={'required':'联系人电话不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     contact_email = forms.EmailField(required=False, label="Email地址", error_messages={'required':'email地址不能为空'}, widget=forms.EmailInput(attrs={'class':"form-control"}))
     company_web = forms.URLField(required=False, label="企业网址", error_messages={'required':'企业网址不能为空'}, widget=forms.URLInput(attrs={'placeholder':"请输入网址全称：例如 http://www.thinkheh.cn", 'class':"form-control"}))
     contact_address = forms.CharField(required=False, label="通讯地址", error_messages={'required':'通讯地址不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
@@ -77,7 +77,7 @@ class CompanyInfoForm(forms.ModelForm):
     # 使用ModelForm时的内部类
     class Meta:
         model = CompanyInfo
-        exclude = ['company_second_type', 'company_cancel', 'create_time', 'create_auth']
+        exclude = ['company_type','company_second_type', 'company_cancel', 'create_time', 'create_auth']
     
     #效验公司名称是否存在
     def clean_company_name(self):
@@ -92,27 +92,37 @@ class CompanyInfoForm(forms.ModelForm):
     def clean_company_IDcard(self):
         company_IDcard = self.cleaned_data['company_IDcard']
         pattern = re.compile(r'[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}')
-        if pattern.match(company_IDcard) != None:
-            if CompanyInfo.objects.filter(company_IDcard=company_IDcard).exists():
-                raise forms.ValidationError('您输入的社会统一信用代码已经存在')
-            else:
-                self.cleaned_data['company_IDcard'] = company_IDcard
+
+        if company_IDcard == "":
+            return company_IDcard
         else:
-            raise forms.ValidationError('您输入的社会统一信用代码有误')
-        return company_IDcard
+            if pattern.match(company_IDcard) != None:
+                if CompanyInfo.objects.filter(company_IDcard=company_IDcard).exists():
+                    raise forms.ValidationError('您输入的社会统一信用代码已经存在')
+                else:
+                    self.cleaned_data['company_IDcard'] = company_IDcard
+            else:
+                raise forms.ValidationError('您输入的社会统一信用代码有误')
+            return company_IDcard
+
 
     #效验手机号是否存在并且无误
     def clean_contact_phone(self):
         contact_phone = self.cleaned_data['contact_phone']
         pattern = re.compile(r'((\d{3,4}-)?\d{7,8})$|(1[3-9][0-9]{9})')
-        if pattern.match(contact_phone) != None:
-            if CompanyInfo.objects.filter(contact_phone=contact_phone).exists():
-                raise forms.ValidationError('您输入的手机号码已经存在')
-            else:
-                self.cleaned_data['contact_phone'] = contact_phone
+
+        if contact_phone == "":
+            return contact_phone
         else:
-            raise forms.ValidationError('请输入正确的手机号码')
-        return contact_phone
+            if pattern.match(contact_phone) != None:
+                if CompanyInfo.objects.filter(contact_phone=contact_phone).exists():
+                    raise forms.ValidationError('您输入的手机号码已经存在')
+                else:
+                    self.cleaned_data['contact_phone'] = contact_phone
+            else:
+                raise forms.ValidationError('请输入正确的手机号码')
+            return contact_phone
+
 
 class CompanyInfoOverHeadForm(forms.ModelForm):
     # company_info_id = models.OneToOneField(CompanyInfo, on_delete=models.CASCADE, verbose_name="所属企业")
@@ -133,64 +143,74 @@ class CompanyInfoOverHeadForm(forms.ModelForm):
     #效验是否为数字类型
     def clean_company_employee(self):
         company_employee = self.cleaned_data['company_employee']
-
-        try:
-            company_employee_zh = int(company_employee)
-        except ValueError as e:
-            raise forms.ValidationError('从业人员规模只能为正整数')
+        if company_employee == "":
+            return company_employee
         else:
-            self.cleaned_data['company_employee'] = company_employee_zh
+            try:
+                company_employee_zh = int(company_employee)
+            except ValueError as e:
+                raise forms.ValidationError('从业人员规模只能为正整数')
+            else:
+                self.cleaned_data['company_employee'] = company_employee_zh
 
-        return company_employee
+            return company_employee
 
     #效验是否为数字类型
     def clean_company_senior_staff(self):
         company_senior_staff = self.cleaned_data['company_senior_staff']
-
-        try:
-            company_senior_staff_zh = int(company_senior_staff)
-        except ValueError as e:
-            raise forms.ValidationError('大专及以上学历人数只能为正整数')
+        if company_senior_staff == "":
+            return company_senior_staff
         else:
-            self.cleaned_data['company_senior_staff'] = company_senior_staff_zh
+            try:
+                company_senior_staff_zh = int(company_senior_staff)
+            except ValueError as e:
+                raise forms.ValidationError('大专及以上学历人数只能为正整数')
+            else:
+                self.cleaned_data['company_senior_staff'] = company_senior_staff_zh
 
-        return company_senior_staff
+            return company_senior_staff
 
     #效验是否为数字类型
     def clean_company_job_title(self):
         company_job_title = self.cleaned_data['company_job_title']
-
-        try:
-            company_job_title_zh = int(company_job_title)
-        except ValueError as e:
-            raise forms.ValidationError('中级及以上职称人数只能为正整数')
+        if company_job_title == "":
+            return company_job_title
         else:
-            self.cleaned_data['company_job_title'] = company_job_title_zh
+            try:
+                company_job_title_zh = int(company_job_title)
+            except ValueError as e:
+                raise forms.ValidationError('中级及以上职称人数只能为正整数')
+            else:
+                self.cleaned_data['company_job_title'] = company_job_title_zh
 
-        return company_job_title
+            return company_job_title
 
     #效验是否为数字类型
     def clean_company_patents_number(self):
         college_degree_or_above = self.cleaned_data['college_degree_or_above']
-
-        try:
-            college_degree_or_above_zh = int(college_degree_or_above)
-        except ValueError as e:
-            raise forms.ValidationError('大专及以上学历人数只能为正整数')
+        if college_degree_or_above == "":
+            return college_degree_or_above
         else:
-            self.cleaned_data['college_degree_or_above'] = college_degree_or_above_zh
+            try:
+                college_degree_or_above_zh = int(college_degree_or_above)
+            except ValueError as e:
+                raise forms.ValidationError('大专及以上学历人数只能为正整数')
+            else:
+                self.cleaned_data['college_degree_or_above'] = college_degree_or_above_zh
 
-        return college_degree_or_above
+            return college_degree_or_above
 
     #效验是否为数字类型
     def clean_company_annual_income(self):
         company_annual_income = self.cleaned_data['company_annual_income']
-
-        try:
-            company_annual_income_zh = int(company_annual_income)
-        except ValueError as e:
-            raise forms.ValidationError('中级及以上职称人数只能为正整数')
+        if company_annual_income == "":
+            return company_annual_income
         else:
-            self.cleaned_data['company_annual_income'] = company_annual_income_zh
+            try:
+                company_annual_income_zh = int(company_annual_income)
+            except ValueError as e:
+                raise forms.ValidationError('中级及以上职称人数只能为正整数')
+            else:
+                self.cleaned_data['company_annual_income'] = company_annual_income_zh
 
-        return company_annual_income
+            return company_annual_income

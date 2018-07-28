@@ -1,263 +1,343 @@
 {% load staticfiles %}
-<form class="form-horizontal" action="" method="post">
-    {% csrf_token %}
-    <div class="form-group form-group-sm">
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label focus" for="{{company_info.company_area.id_for_label}}">{{company_info.company_area.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_area }}
-                        <p class="text-danger">{{ company_info.company_area.errors.as_text }}</p>
-                    </div>
-            </div>
-
-            <div class="form-group">
-                    <!-- Text input-->
-                    <label class="col-sm-3 control-label text-info" for="{{company_info.company_name.id_for_label}}">{{company_info.company_name.label}}*</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_name }}
-                        <p class="text-danger">{{ company_info.company_name.errors.as_text }}</p>
-                    </div>
-            </div>
-
-            
-            <div id="sel" v-cloak>
-                <!-- 企业一级分类，第一个select框 -->
+{% if ci_id %}
+    <form class="form-horizontal" action="" method="post">
+        {% csrf_token %}
+        <div class="form-group form-group-sm">
                 <div class="form-group">
-                    <label class="col-sm-3 control-label" for="{{company_info.company_type.id_for_label}}">{{company_info.company_type.label}}</label>
+                        <!-- 从业人员规模-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_employee.id_for_label}}">{{company_info.company_employee.label}}</label>
                         <div class="col-sm-7">
-                            <select name='company_type' id="ctype" class="form-control" v-model='ctype_sel' @change='getCtypeSel()'>
-                                <!-- <option>-请选择-</option> -->
-                                <option v-for="ctype in c_type" v-bind:value="ctype.pk">{% verbatim %}{{ ctype.fields.company_type_name }}{% endverbatim %}</option>
-                            </select>
+                            {{ company_info.company_employee }}
+                            <p class="text-danger">{{ company_info.company_employee.errors.as_text }}</p>
                         </div>
                 </div>
-                  	
-                <!-- 企业二级分类，第二个select框 -->
+
                 <div class="form-group">
-                    <label class="col-sm-3 control-label" for="{{company_info.company_second_type.id_for_label}}">{{company_info.company_second_type.label}}</label>
-                    <div class="col-sm-7">
-                        <select name="company_second_type" id="cstype" class="form-control">
-                            <option v-for="cstype_f in cs_type" v-bind:value="cstype_f.pk">{% verbatim %}{{cstype_f.fields.company_second_type_name}}{% endverbatim %}</option>
-                        </select>
-                    </div>    
+                        <!-- 大专及以上学历人数-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_senior_staff.id_for_label}}">{{company_info.company_senior_staff.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_senior_staff }}
+                            <p class="text-danger">{{ company_info.company_senior_staff.errors.as_text }}</p>
+                        </div>
                 </div>
-            </div>
 
-            <!-- <div class="form-group" id="ctype">
-                    <label class="col-sm-3 control-label" for="{{company_info.company_type.id_for_label}}">{{company_info.company_type.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_type }}
-                        <p class="text-danger">{{ company_info.company_type.errors.as_text }}</p>
+                <div class="form-group">
+                        <!-- 中级及以上职称人数-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_job_title.id_for_label}}">{{company_info.company_job_title.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_job_title }}
+                            <p class="text-danger">{{ company_info.company_job_title.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <!-- 企业拥有专利个数-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_patents_number.id_for_label}}">{{company_info.company_patents_number.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_patents_number }}
+                            <p class="text-danger">{{ company_info.company_patents_number.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <!-- 主要产品/服务-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_product.id_for_label}}">{{company_info.company_product.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_product }}
+                            <p class="text-danger">{{ company_info.company_product.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <!-- 企业年产值-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_annual_income.id_for_label}}">{{company_info.company_annual_income.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_annual_income }}
+                            <p class="text-danger">{{ company_info.company_annual_income.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <!-- 备注-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_remark.id_for_label}}">{{company_info.company_remark.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_remark }}
+                            <p class="text-danger">{{ company_info.company_remark.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                 <!-- Button -->
+                 <hr>
+                 <div class="col-sm-12 text-center">
+                     <a type="button" class="btn btn-danger" href="">重新填写</a>
+                     <input type="submit" class="btn btn-success" value="提交信息" />
+                 </div>
+        </div>
+    </form>
+{% else %}
+    <form class="form-horizontal" action="{% url 'input_data_submit' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group form-group-sm">
+
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label focus" for="{{company_info.company_area.id_for_label}}">{{company_info.company_area.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_area }}
+                            <p class="text-danger">{{ company_info.company_area.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <!-- Text input-->
+                        <label class="col-sm-3 control-label text-info" for="{{company_info.company_name.id_for_label}}">{{company_info.company_name.label}}*</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_name }}
+                            <p class="text-danger">{{ company_info.company_name.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                
+                <div id="sel" v-cloak>
+                    <!-- 企业一级分类，第一个select框 -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="id_company_type">企业一级分类</label>
+                            <div class="col-sm-7">
+                                <select name='company_type' id="id_company_type" class="form-control" v-model='ctype_sel' @change='getCtypeSel()'>
+                                    <!-- <option>-请选择-</option> -->
+                                    <option v-for="ctype in c_type" v-bind:value="ctype.pk">{% verbatim %}{{ ctype.fields.company_type_name }}{% endverbatim %}</option>
+                                </select>
+                            </div>
                     </div>
-            </div>
-
-            <div class="form-group" id="cstype">
-                    <label class="col-sm-3 control-label" for="{{company_info.company_second_type.id_for_label}}">{{company_info.company_second_type.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_second_type }}
-                        <p class="text-danger">{{ company_info.company_second_type.errors.as_text }}</p>
+                        
+                    <!-- 企业二级分类，第二个select框 -->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="id_company_second_type">企业二级分类</label>
+                        <div class="col-sm-7">
+                            <select name="company_second_type" id="id_company_second_type" class="form-control">
+                                <option v-for="cstype_f in cs_type" v-bind:value="cstype_f.pk">{% verbatim %}{{cstype_f.fields.company_second_type_name}}{% endverbatim %}</option>
+                            </select>
+                        </div>    
                     </div>
-            </div> -->
+                </div>
 
-            <div class="form-group">
-                    <label class="col-sm-3 control-label" for="{{company_info.company_IDcard.id_for_label}}">{{company_info.company_IDcard.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_IDcard }}
-                        <p class="text-danger">{{ company_info.company_IDcard.errors.as_text }}</p>
-                    </div>
-            </div>
+                <!-- <div class="form-group" id="ctype">
+                        <label class="col-sm-3 control-label" for="{{company_info.company_type.id_for_label}}">{{company_info.company_type.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_type }}
+                            <p class="text-danger">{{ company_info.company_type.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.company_business_scope.id_for_label}}">{{company_info.company_business_scope.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_business_scope }}
-                        <p class="text-danger">{{ company_info.company_business_scope.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group" id="cstype">
+                        <label class="col-sm-3 control-label" for="{{company_info.company_second_type.id_for_label}}">{{company_info.company_second_type.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_second_type }}
+                            <p class="text-danger">{{ company_info.company_second_type.errors.as_text }}</p>
+                        </div>
+                </div> -->
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.company_registered_capital.id_for_label}}">{{company_info.company_registered_capital.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_registered_capital }}
-                        <p class="text-danger">{{ company_info.company_registered_capital.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <label class="col-sm-3 control-label" for="{{company_info.company_IDcard.id_for_label}}">{{company_info.company_IDcard.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_IDcard }}
+                            <p class="text-danger">{{ company_info.company_IDcard.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.responsible_person.id_for_label}}">{{company_info.responsible_person.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.responsible_person }}
-                        <p class="text-danger">{{ company_info.responsible_person.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_business_scope.id_for_label}}">{{company_info.company_business_scope.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_business_scope }}
+                            <p class="text-danger">{{ company_info.company_business_scope.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <label class="col-sm-3 control-label">性别</label>
-                    <div class="col-sm-7">
-                        {% for radio in company_info.responsible_person_sex %}
-                        <label class="radio-inline" for="{{ radio.id_for_label }}">
-                      <span>{{ radio.tag }}</span>{{ radio.choice_label }}
-                  </label> {% endfor %}
-                    </div>
-            </div>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_registered_capital.id_for_label}}">{{company_info.company_registered_capital.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_registered_capital }}
+                            <p class="text-danger">{{ company_info.company_registered_capital.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.responsible_person_age.id_for_label}}">{{company_info.responsible_person_age.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.responsible_person_age }}
-                        <p class="text-danger">{{ company_info.responsible_person_age.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.responsible_person.id_for_label}}">{{company_info.responsible_person.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.responsible_person }}
+                            <p class="text-danger">{{ company_info.responsible_person.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <label class="col-sm-3 control-label">法人政治面貌</label>
-                    <div class="col-sm-7">
-                        {% for radio in company_info.responsible_person_politics_status %}
-                        <label class="radio-inline" for="{{ radio.id_for_label }}">
-                      <span>{{ radio.tag }}</span>{{ radio.choice_label }}
-                  </label> {% endfor %}
-                    </div>
-            </div>
+                <div class="form-group">
+                        <label class="col-sm-3 control-label">性别</label>
+                        <div class="col-sm-7">
+                            {% for radio in company_info.responsible_person_sex %}
+                            <label class="radio-inline" for="{{ radio.id_for_label }}">
+                        <span>{{ radio.tag }}</span>{{ radio.choice_label }}
+                    </label> {% endfor %}
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <label class="col-sm-3 control-label">法人文化程度</label>
-                    <div class="col-sm-7">
-                        {% for radio in company_info.responsible_person_education %}
-                        <label class="radio-inline" for="{{ radio.id_for_label }}">
-                      <span>{{ radio.tag }}</span>{{ radio.choice_label }}
-                  </label> {% endfor %}
-                    </div>
-            </div>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.responsible_person_age.id_for_label}}">{{company_info.responsible_person_age.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.responsible_person_age }}
+                            <p class="text-danger">{{ company_info.responsible_person_age.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.contact_name.id_for_label}}">{{company_info.contact_name.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.contact_name }}
-                        <p class="text-danger">{{ company_info.contact_name.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <label class="col-sm-3 control-label">法人政治面貌</label>
+                        <div class="col-sm-7">
+                            {% for radio in company_info.responsible_person_politics_status %}
+                            <label class="radio-inline" for="{{ radio.id_for_label }}">
+                        <span>{{ radio.tag }}</span>{{ radio.choice_label }}
+                    </label> {% endfor %}
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.contact_phone.id_for_label}}">{{company_info.contact_phone.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.contact_phone }}
-                        <p class="text-danger">{{ company_info.contact_phone.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <label class="col-sm-3 control-label">法人文化程度</label>
+                        <div class="col-sm-7">
+                            {% for radio in company_info.responsible_person_education %}
+                            <label class="radio-inline" for="{{ radio.id_for_label }}">
+                        <span>{{ radio.tag }}</span>{{ radio.choice_label }}
+                    </label> {% endfor %}
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.contact_email.id_for_label}}">{{company_info.contact_email.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.contact_email }}
-                        <p class="text-danger">{{ company_info.contact_email.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.contact_name.id_for_label}}">{{company_info.contact_name.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.contact_name }}
+                            <p class="text-danger">{{ company_info.contact_name.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.company_web.id_for_label}}">{{company_info.company_web.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.company_web }}
-                        <p class="text-danger">{{ company_info.company_web.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.contact_phone.id_for_label}}">{{company_info.contact_phone.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.contact_phone }}
+                            <p class="text-danger">{{ company_info.contact_phone.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <div class="form-group">
-                    <!-- select input-->
-                    <label class="col-sm-3 control-label" for="{{company_info.contact_address.id_for_label}}">{{company_info.contact_address.label}}</label>
-                    <div class="col-sm-7">
-                        {{ company_info.contact_address }}
-                        <p class="text-danger">{{ company_info.contact_address.errors.as_text }}</p>
-                    </div>
-            </div>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.contact_email.id_for_label}}">{{company_info.contact_email.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.contact_email }}
+                            <p class="text-danger">{{ company_info.contact_email.errors.as_text }}</p>
+                        </div>
+                </div>
 
-            <!-- Button -->
-            <hr>
-            <div class="col-sm-12 text-center">
-                <a type="button" class="btn btn-danger" href="">重新填写</a>
-                <input type="submit" class="btn btn-success" value="提交信息" />
-            </div>
-      </div>
-</form>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_web.id_for_label}}">{{company_info.company_web.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.company_web }}
+                            <p class="text-danger">{{ company_info.company_web.errors.as_text }}</p>
+                        </div>
+                </div>
 
-<script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.contact_address.id_for_label}}">{{company_info.contact_address.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.contact_address }}
+                            <p class="text-danger">{{ company_info.contact_address.errors.as_text }}</p>
+                        </div>
+                </div>
 
-<script type="text/javascript">
-    $(function(){
-        //alert("进来了！");
-        loadfirst();
+                <!-- Button -->
+                <hr>
+                <div class="col-sm-12 text-center">
+                    <a type="button" class="btn btn-danger" href="">重新填写</a>
+                    <input type="submit" class="btn btn-success" value="提交信息" />
+                </div>
+        </div>
+    </form>
 
-    });
-		
-    function loadfirst(){
-        $.ajax({
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+
+    <script type="text/javascript">
+        $(function(){
+            //alert("测试，成功！");
+            loadfirst();
+
+        });
+            
+        function loadfirst(){
+            $.ajax({
+                type:"post",
+                url:"{% url 'get_company_type_data' %}",
+                dataType:"json",
+                success:function(data){
+                        //id为0时为父类
+                    vm.c_type = data;
+                    }		
+                });	
+            }
+
+        function loadsecond(id){
+            $.ajax({
             type:"post",
-            url:"{% url 'get_company_type_data' %}",
+            url:"{% url 'get_company_second_type_data' %}",
+            data:{"company_type_id":id},
             dataType:"json",
             success:function(data){
-                    //id为0时为父类
-                vm.c_type = data;
+                vm2.cs_type = data;
                 }		
             });	
         }
+    </script>
 
-    function loadsecond(id){
-        $.ajax({
-	    type:"post",
-        url:"{% url 'get_company_second_type_data' %}",
-        data:{"company_type_id":id},
-	    dataType:"json",
-	    success:function(data){
-                //id为0时为父类
-               vm2.cs_type = data;
-            }		
+    <script type="text/javascript">
+        var vm = new Vue({
+            el:'#id_company_type',
+            data:{
+                ctype_sel : '',
+                c_type : [],
+
+            },
+            methods:{
+                getCtypeSel:function(){
+                            var ctype_selected = this.ctype_sel;
+                            loadsecond(ctype_selected);
+                        }
+            },
+        });
+            
+        var vm2 = new Vue({
+            el:'#id_company_second_type',
+            data:{
+                    cs_type : [],
+            },
+            // methods:{
+            //     details:function loadsecond(id){
+            //                 $.ajax({
+            //                 type:"post",
+            //                 url:"{% url 'get_company_second_type_data' %}",
+            //                 data:{"company_type_id":id},
+            //                 dataType:"json",
+            //                 success:function(data){
+            //                         //id为0时为父类
+            //                     vm2.cs_type = data;
+            //                     }		
+            //                 });	
+            //             }
+            // },
         });	
-    }
-</script>
-
-<script type="text/javascript">
-	var vm = new Vue({
-        el:'#ctype',
-	    data:{
-            c_type : [],
-        },
-        methods:{
-            getCtypeSel:function(){
-                        var ctype_selected = this.ctype_sel;
-                        loadsecond(ctype_selected);
-                    }
-        },
-    });
-		
-	var vm2 = new Vue({
-	    el:'#cstype',
-	    data:{
-		        cs_type : [],
-        },
-        // methods:{
-        //     details:function loadsecond(id){
-        //                 $.ajax({
-        //                 type:"post",
-        //                 url:"{% url 'get_company_second_type_data' %}",
-        //                 data:{"company_type_id":id},
-        //                 dataType:"json",
-        //                 success:function(data){
-        //                         //id为0时为父类
-        //                     vm2.cs_type = data;
-        //                     }		
-        //                 });	
-        //             }
-        // },
-	});	
-  </script>
+    </script>
+{% endif %}
+    
