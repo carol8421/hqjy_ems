@@ -14,12 +14,10 @@ from ems_account.models import UserPermissionProfile
 from ems_mainsite.models import InternalCircular
 from .check_system import check_system_open
 
-
 def check_system_open_or_close(request):
     context = {}
     return render(request, 'system_maintenance.html', context)
-
-
+    
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
 def index(request):

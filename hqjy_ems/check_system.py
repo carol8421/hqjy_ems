@@ -9,7 +9,7 @@ from functools import wraps
 from django.http import HttpResponseRedirect, Http404
 from ems_mainsite.models import SystemConfig
 
-
+#检查系统是否开放的装饰器函数
 def check_system_open(func=None, redirect=None):
     def decorator(func):
         @wraps(func)

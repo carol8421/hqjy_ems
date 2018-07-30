@@ -1,9 +1,18 @@
 {% load staticfiles %}
 
 {% if ci_id %}
-    <form class="form-horizontal" action="" method="post">
+    <form class="form-horizontal" action="{% url 'input_overhead_data_submit' ci_id %}" method="post">
         {% csrf_token %}
         <div class="form-group form-group-sm">
+
+                <div class="form-group">
+                        <!-- 企业标签-->
+                        <label class="col-sm-3 control-label" for="{{company_info.company_tag.id_for_label}}">{{company_info.company_tag.label}}</label>
+                        <div class="col-sm-7 checkbox">
+                            {{ company_info.company_tag }}
+                        </div>
+                </div>
+
                 <div class="form-group">
                         <!-- 从业人员规模-->
                         <label class="col-sm-3 control-label" for="{{company_info.company_employee.id_for_label}}">{{company_info.company_employee.label}}</label>

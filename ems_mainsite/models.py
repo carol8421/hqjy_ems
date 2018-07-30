@@ -121,16 +121,16 @@ class CompanyTag(models.Model):
 class CompanyInfoOverHead(models.Model):
     company_info_id = models.OneToOneField(CompanyInfo, on_delete=models.CASCADE, verbose_name="所属企业")
     company_tag = models.ManyToManyField(CompanyTag, related_name="company_tag_for_company", verbose_name="企业标签")
-    company_employee = models.IntegerField(verbose_name="从业人员规模", blank=True)
-    company_senior_staff = models.IntegerField(verbose_name="大专及以上学历人数", blank=True)
-    company_job_title = models.IntegerField(verbose_name="中级及以上职称人数", blank=True)
-    company_patents_number = models.IntegerField(verbose_name="企业拥有专利个数", blank=True)
+    company_employee = models.IntegerField(verbose_name="从业人员规模", blank=True, default=0)
+    company_senior_staff = models.IntegerField(verbose_name="大专及以上学历人数", blank=True ,default=0)
+    company_job_title = models.IntegerField(verbose_name="中级及以上职称人数", blank=True ,default=0)
+    company_patents_number = models.IntegerField(verbose_name="企业拥有专利个数", blank=True ,default=0)
     company_product = models.TextField(verbose_name="主要产品/服务", blank=True)
-    company_annual_income = models.IntegerField(verbose_name="企业年产值", blank=True)
+    company_annual_income = models.IntegerField(verbose_name="企业年产值", blank=True ,default=0)
     company_remark = models.TextField(verbose_name="备注", blank=True)
 
-    def __str__(self):
-        return self.company_info_id
+    # def __str__(self):
+    #     return self.company_info_id
 
     class Meta:
         verbose_name_plural = "企业附加信息"

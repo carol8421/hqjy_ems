@@ -10,7 +10,7 @@ from django.core import serializers
 from ems_account.models import UserPermissionProfile
 from .models import InternalCircular, CompanyType, CompanySecondType
 from hqjy_ems.check_system import check_system_open
-from .froms import CompanyInfoForm, CompanyInfoOverHeadForm
+from .forms import CompanyInfoForm, CompanyInfoOverHeadForm
 
 # Create your views here.
 
@@ -123,6 +123,24 @@ def input_overhead_data_submit(request, ci_id):
          context['company_info'] = company_overhead_info_form
          return render(request, "index_workbench.html", context)
     elif request.method == 'POST':
-        pass
+        company_overhead_info_form = CompanyInfoOverHeadForm(request.POST)
+        company_tag_list = request.POST.getlist("company_tag")
+        print(company_tag_list)
+        print(company_overhead_info_form)
+        print(company_overhead_info_form.is_valid())
+        if company_overhead_info_form.is_valid():
+            new_company_oh_info_form = company_overhead_info_form.save(commit=False)
+            new_company_oh_info_form.company_info_id_id = ci_id
+            new_company_oh_info_form.company_employee = company_overhead_info_form.cleaned_data['company_employee']
+            new_company_oh_info_form.company_senior_staff = company_overhead_info_form.cleaned_data['company_senior_staff']
+            new_company_oh_info_form.company_job_title = company_overhead_info_form.cleaned_data['company_job_title']
+            new_company_oh_info_form.company_annual_income = company_overhead_info_form.cleaned_data['company_annual_income']
+            new_company_oh_info_form.save()
+
+            for company_tag_id in company_tag_list:
+                new_company_oh_info_form.company_tag.add(company_tag_id)
+                new_company_oh_info_form.save()
+
+            return HttpResponseRedirect(reverse('index_workbench'))
     else:
-        pass
+        pass 

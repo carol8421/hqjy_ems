@@ -9,7 +9,7 @@ from django import forms
 import re
 from django.forms import widgets
 from django.forms import fields
-from .models import CompanyInfo, CompanyInfoOverHead, CompanyType, CompanySecondType
+from .models import CompanyInfo, CompanyInfoOverHead, CompanyType, CompanySecondType, CompanyTag
 
 class CompanyInfoForm(forms.ModelForm):
     
@@ -125,14 +125,15 @@ class CompanyInfoForm(forms.ModelForm):
 
 
 class CompanyInfoOverHeadForm(forms.ModelForm):
+    COMPANYTAG = CompanyTag.objects.all()
     # company_info_id = models.OneToOneField(CompanyInfo, on_delete=models.CASCADE, verbose_name="所属企业")
-    # company_tag = models.ManyToManyField(CompanyTag, related_name="company_tag_for_company", verbose_name="企业标签")
+    company_tag = forms.ModelMultipleChoiceField(label="企业标签", queryset=COMPANYTAG, widget=forms.CheckboxSelectMultiple(attrs={'class':""}))
     company_employee = forms.IntegerField(required=False, label="从业人员规模", error_messages={'invalid':'请填入整数数值'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     company_senior_staff = forms.IntegerField(required=False, label="大专及以上学历人数", error_messages={'invalid':'请填入整数数值'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     company_job_title = forms.IntegerField(required=False, label="中级及以上职称人数", error_messages={'invalid':'请填入整数数值'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     company_patents_number = forms.IntegerField(required=False, label="企业拥有专利个数", error_messages={'invalid':'请填入整数数值'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     company_product = forms.CharField(required=False, label="主要产品/服务", widget=forms.Textarea(attrs={'class':"form-control",'rows':"3"}))
-    company_annual_income = forms.IntegerField(required=False, label="企业年产值", error_messages={'invalid':'请填入整数数值'},  widget=forms.TextInput(attrs={'class':"form-control"}))
+    company_annual_income = forms.IntegerField(required=False, label="企业年产值（ 万元 ）", error_messages={'invalid':'请填入整数数值'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     company_remark = forms.CharField(required=False, label="备注", widget=forms.Textarea(attrs={'class':"form-control",'rows':"3"}))
 
     # 使用ModelForm时的内部类
@@ -143,7 +144,8 @@ class CompanyInfoOverHeadForm(forms.ModelForm):
     #效验是否为数字类型
     def clean_company_employee(self):
         company_employee = self.cleaned_data['company_employee']
-        if company_employee == "":
+        if company_employee == None:
+            company_employee = 0
             return company_employee
         else:
             try:
@@ -158,7 +160,8 @@ class CompanyInfoOverHeadForm(forms.ModelForm):
     #效验是否为数字类型
     def clean_company_senior_staff(self):
         company_senior_staff = self.cleaned_data['company_senior_staff']
-        if company_senior_staff == "":
+        if company_senior_staff == None:
+            company_senior_staff = 0
             return company_senior_staff
         else:
             try:
@@ -173,7 +176,8 @@ class CompanyInfoOverHeadForm(forms.ModelForm):
     #效验是否为数字类型
     def clean_company_job_title(self):
         company_job_title = self.cleaned_data['company_job_title']
-        if company_job_title == "":
+        if company_job_title == None:
+            company_job_title = 0
             return company_job_title
         else:
             try:
@@ -187,23 +191,25 @@ class CompanyInfoOverHeadForm(forms.ModelForm):
 
     #效验是否为数字类型
     def clean_company_patents_number(self):
-        college_degree_or_above = self.cleaned_data['college_degree_or_above']
-        if college_degree_or_above == "":
-            return college_degree_or_above
+        company_patents_number = self.cleaned_data['company_patents_number']
+        if company_patents_number == None:
+            company_patents_number = 0
+            return company_patents_number
         else:
             try:
-                college_degree_or_above_zh = int(college_degree_or_above)
+                company_patents_number_zh = int(company_patents_number)
             except ValueError as e:
                 raise forms.ValidationError('大专及以上学历人数只能为正整数')
             else:
-                self.cleaned_data['college_degree_or_above'] = college_degree_or_above_zh
+                self.cleaned_data['company_patents_number'] = company_patents_number_zh
 
-            return college_degree_or_above
+            return company_patents_number
 
     #效验是否为数字类型
     def clean_company_annual_income(self):
         company_annual_income = self.cleaned_data['company_annual_income']
-        if company_annual_income == "":
+        if company_annual_income == None:
+            company_annual_income = 0
             return company_annual_income
         else:
             try:
