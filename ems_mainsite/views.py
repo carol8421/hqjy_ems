@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -14,6 +15,39 @@ from .forms import CompanyInfoForm, CompanyInfoOverHeadForm
 
 # Create your views here.
 
+#分页方法，需要传入request、每页需要的文章数、用于分页的文章总集合
+def page_2_page(request, num_of_page, need_info_query):
+    #分页处理
+    paginator = Paginator(need_blogs, num_of_page) #分页处理，num_of_page代表每页的文章数
+    #获取页面传来参数（第N页）
+    page = request.GET.get('page')
+    page_num = paginator.get_page(page)
+    return page_num #返回一个分页后的数据集
+
+#页码缩减方法
+def page_2_range(page_num):
+    #获取当前页码
+    current_page = page_num.number
+    #获取当前页码的前两页
+    behind_page = list(range(max(current_page-2,1),current_page))
+    #获取当前页码的后两页
+    after_page = list(range(current_page,min(page_num.paginator.num_pages,current_page+2)+1))
+    #组合页码列表
+    page_range = behind_page + after_page
+
+    #判断第一页或最后一页的页码，如果页码之间间隔超过2页，添加"..."
+    if page_range[0] - 1 >= 2 :
+        page_range.insert(0,"...")
+    if page_num.paginator.num_pages - page_range[-1] >= 2 :
+        page_range.append("...")
+        
+    #判断页码，添加第一页和最后一页
+    if page_range[0] != 1:
+        page_range.insert(0,1)
+    if page_range[-1] != page_num.paginator.num_pages:
+        page_range.append(page_num.paginator.num_pages)
+
+    return page_range
 
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
@@ -144,3 +178,21 @@ def input_overhead_data_submit(request, ci_id):
             return HttpResponseRedirect(reverse('index_workbench'))
     else:
         pass 
+
+@login_required(login_url='user_login')
+@check_system_open(redirect='/system_maintenance/')
+@csrf_exempt
+def query_company_info(request):
+    return render(request, '/ems_mainsite/workbench/search_data.html')
+
+@login_required(login_url='user_login')
+@check_system_open(redirect='/system_maintenance/')
+@csrf_exempt
+def get_all_company_info(request):
+    pass
+
+@login_required(login_url='user_login')
+@check_system_open(redirect='/system_maintenance/')
+@csrf_exempt
+def company_info_detail(request, ci_id):
+    pass

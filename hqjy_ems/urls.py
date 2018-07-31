@@ -27,6 +27,7 @@ urlpatterns = [
     path('ckeditor', include('ckeditor_uploader.urls')),
     path('mainsite/', include('ems_mainsite.urls')),
     path('ems-account/', include('ems_account.urls')),
+    path('search/', include('haystack.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -16,4 +16,7 @@ urlpatterns = [
     path('get-second-type-data/', views.get_company_second_type_data, name='get_company_second_type_data'),
     path('input-data-submit/', views.input_data_submit, name='input_data_submit'),
     path('input-overhead-data-submit/<int:ci_id>', views.input_overhead_data_submit, name='input_overhead_data_submit'),
+    path('query-company-info', views.query_company_info, name='query_company_info'),
+    path('get-all-company-info', views.get_all_company_info, name='get_all_company_info'),
+    path('company-info-detail/<int:ci_id>', views.company_info_detail, name='company_info_detail'),
 ]

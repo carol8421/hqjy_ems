@@ -1,0 +1,5 @@
+#指定索引的属性
+{{object.company_name}}
+{{object.contact_phone}}
+{{object.contact_name}}
+{{object.responsible_person}}
