@@ -292,7 +292,6 @@
                 url:"{% url 'get_company_type_data' %}",
                 dataType:"json",
                 success:function(data){
-                        //id为0时为父类
                     vm.c_type = data;
                     }		
                 });	

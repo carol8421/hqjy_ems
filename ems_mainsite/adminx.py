@@ -21,7 +21,7 @@ xadmin.site.register(views.CommAdminView, GlobalSettings)
 
 # Register your models here.
 class CompanyInfoAdmin(object):
-    list_display = ['company_name', 'company_type', 'company_second_type', 'company_area', 'company_IDcard', 'company_business_scope', 'company_registered_capital', 'responsible_person', 'responsible_person_sex', 'responsible_person_age', 'responsible_person_politics_status', 'responsible_person_education', 'contact_name', 'contact_phone', 'contact_email', 'company_web', 'contact_address', 'company_cancel', 'create_time']
+    list_display = ['company_name', 'company_type', 'company_second_type', 'company_area', 'company_IDcard', 'company_business_scope', 'company_registered_capital', 'responsible_person', 'responsible_person_phone', 'responsible_person_sex', 'responsible_person_age', 'responsible_person_politics_status', 'responsible_person_education', 'contact_name', 'contact_phone', 'contact_email', 'company_web', 'contact_address', 'company_cancel', 'create_time']
 
     # change_form_template = 'area.html'
 xadmin.site.register(CompanyInfo, CompanyInfoAdmin)

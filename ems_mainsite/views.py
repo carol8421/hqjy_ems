@@ -9,16 +9,18 @@ from django.urls import reverse
 from django.utils import timezone
 from django.core import serializers
 from ems_account.models import UserPermissionProfile
-from .models import InternalCircular, CompanyType, CompanySecondType
+from .models import InternalCircular, CompanyType, CompanySecondType, CompanyInfo, CompanyInfoOverHead
 from hqjy_ems.check_system import check_system_open
 from .forms import CompanyInfoForm, CompanyInfoOverHeadForm
+import json
+from itertools import chain
 
 # Create your views here.
 
 #分页方法，需要传入request、每页需要的文章数、用于分页的文章总集合
 def page_2_page(request, num_of_page, need_info_query):
     #分页处理
-    paginator = Paginator(need_blogs, num_of_page) #分页处理，num_of_page代表每页的文章数
+    paginator = Paginator(need_info_query, num_of_page) #分页处理，num_of_page代表每页的文章数
     #获取页面传来参数（第N页）
     page = request.GET.get('page')
     page_num = paginator.get_page(page)
@@ -67,13 +69,32 @@ def index_workbench(request):
     today = timezone.now().date()
     # 取得自动撤销日期大于当天的通知
     notification_list = InternalCircular.objects.filter(
-        notification_auto_revocation__gt=today, notification_revocation_flag=False)
+        notification_auto_revocation__gte=today, notification_revocation_flag=False)
     
     if request.method == 'GET':
         company_info = CompanyInfoForm()
         company_Info_over_head = CompanyInfoOverHeadForm()
         context['company_info'] = company_info
         context['company_Info_over_head'] = company_Info_over_head
+        #传递公司信息及分页
+        all_company_info = CompanyInfo.objects.select_related('company_type').select_related('company_second_type')
+        all_company_overhead_info = CompanyInfoOverHead.objects.all().prefetch_related('company_tag')
+        
+        #测试
+        # for a in all_company_overhead_info:
+        #     print(a.company_info_id, a.company_tag.all())
+        # print(all_company_overhead_info.values())
+
+        #分页
+        page_num = page_2_page(request, 8, all_company_info) #调用分页方法，4 - 代表每页的文章数
+        page_range = page_2_range(page_num) #调用页码缩减方法，传入的是分页后的数据
+
+        context['all_company_info'] = all_company_info
+        context['all_company_overhead_info'] =all_company_overhead_info
+        # #传递分页后的blog文章集合信息
+        context['page_num'] = page_num
+        # #缩减后的页码范围
+        context['page_range'] = page_range
 
     context['user_level'] = user_level
     context['notification_list'] = notification_list
@@ -102,7 +123,8 @@ def notification_detail(request, Internalcircular_pk):
 @csrf_exempt
 def get_company_type_data(request):
     company_type = CompanyType.objects.all()
-    json_data = serializers.serialize("json", company_type)
+    json_data = serializers.serialize("json", company_type, use_natural_foreign_keys=False)
+    #print(json_data)
     return HttpResponse(json_data,content_type="application/json")
 
 #获取企业二级分类信息-返回Json数据
@@ -113,7 +135,7 @@ def get_company_second_type_data(request):
     company_type_id = request.POST.get('company_type_id')
     company_second_type = CompanySecondType.objects.filter(company_type_id=company_type_id)
     #print(company_second_type)
-    json_data = serializers.serialize("json", company_second_type)
+    json_data = serializers.serialize("json", company_second_type, use_natural_foreign_keys=False)
     return HttpResponse(json_data,content_type="application/json")
 
 #提交录入用户主信息数据视图
@@ -121,6 +143,7 @@ def get_company_second_type_data(request):
 @check_system_open(redirect='/system_maintenance/')
 @csrf_exempt
 def input_data_submit(request):
+    
     if request.method == 'POST':
         company_info_form = CompanyInfoForm(request.POST)
         print(request.POST)
@@ -152,8 +175,10 @@ def input_overhead_data_submit(request, ci_id):
     context = {}
     if request.method == 'GET':
          company_overhead_info_form = CompanyInfoOverHeadForm()
+         user_level = UserPermissionProfile.objects.filter(user=request.user).values()[0].get('user_level_id')
          ci_id = ci_id
          context['ci_id'] = ci_id
+         context['user_level'] = user_level
          context['company_info'] = company_overhead_info_form
          return render(request, "index_workbench.html", context)
     elif request.method == 'POST':
@@ -179,20 +204,55 @@ def input_overhead_data_submit(request, ci_id):
     else:
         pass 
 
+#查询框体视图
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
 @csrf_exempt
 def query_company_info(request):
     return render(request, '/ems_mainsite/workbench/search_data.html')
 
+#获取所有公司信息视图 ---- 用此方法无法分页，已废弃
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
 @csrf_exempt
 def get_all_company_info(request):
-    pass
+    if request.method == "POST":
+        all_company_info = CompanyInfo.objects.select_related('company_type').select_related('company_second_type')
+        #分页
+        page_num = page_2_page(request, 8, all_company_info) #调用分页方法，4 - 代表每页的文章数
+        page_range = page_2_range(page_num) #调用页码缩减方法，传入的是分页后的数据
+        print(page_num, page_range)
+        json_data = serializers.serialize("json", page_num, use_natural_foreign_keys=True)
+        print(json_data)
+        return HttpResponse(json_data, content_type="application/json")
+    elif request.method == "GET":
+        all_company_info = CompanyInfo.objects.select_related('company_type').select_related('company_second_type')
+        #分页
+        page_num = page_2_page(request, 8, all_company_info) #调用分页方法，4 - 代表每页的文章数
+        page_range = page_2_range(page_num) #调用页码缩减方法，传入的是分页后的数据
+        context = {}
+        context['all_company_info'] = all_company_info
+        # #传递分页后的blog文章集合信息
+        context['page_num'] = page_num
+        # #缩减后的页码范围
+        context['page_range'] = page_range
+        return render(request, 'index_workbench.html', context)
 
+#展示选中的公司视图
 @login_required(login_url='user_login')
 @check_system_open(redirect='/system_maintenance/')
 @csrf_exempt
 def company_info_detail(request, ci_id):
-    pass
+    context = {}
+
+    company_info = CompanyInfo.objects.filter(pk=ci_id).select_related('company_type').select_related('company_second_type')
+    company_overhead_info = CompanyInfoOverHead.objects.filter(company_info_id=ci_id).prefetch_related('company_tag')
+    
+    #测试
+    # for a in company_overhead_info:
+    #     print(a.company_info_id, a.company_tag.all())
+
+    context['company_info'] = company_info
+    context['company_overhead_info'] = company_overhead_info
+    
+    return render(request, 'ems_mainsite/workbench/company_info_detail.html', context)

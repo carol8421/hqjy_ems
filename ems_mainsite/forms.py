@@ -14,38 +14,41 @@ from .models import CompanyInfo, CompanyInfoOverHead, CompanyType, CompanySecond
 class CompanyInfoForm(forms.ModelForm):
     
     COUNTY_CHOICES = (
-        (1,"个旧市"),
-        (2,"开远市"),
-        (3,"蒙自市"),
-        (4,"建水县"),
-        (5,"石屏县"),
-        (6,"弥勒市"),
-        (7,"泸西县"),
-        (8,"红河县"),
-        (9,"元阳县"),
-        (10,"绿春县"),
-        (11,"屏边县"),
-        (12,"金平县"),
-        (13,"河口县"),
+        ("个旧市","个旧市"),
+        ("开远市","开远市"),
+        ("蒙自市","蒙自市"),
+        ("建水县","建水县"),
+        ("石屏县","石屏县"),
+        ("弥勒市","弥勒市"),
+        ("泸西县","泸西县"),
+        ("红河县","红河县"),
+        ("元阳县","元阳县"),
+        ("绿春县","绿春县"),
+        ("屏边县","屏边县"),
+        ("金平县","金平县"),
+        ("河口县","河口县"),
+        ("昆明市","昆明市"),
+        ("其他地州","其他地州"),
+        ("其他省市","其他省市"),
     )
 
     SEX_CHOICES = (
-        (1,"男"),
-        (2,"女"),
+        ("男","男"),
+        ("女","女"),
     )
 
     POLITICS_CHOICES = (
-        (1,"党员"),
-        (2,"群众"),
-        (3,"其他"),
+        ("党员","党员"),
+        ("群众","群众"),
+        ("其他","其他"),
     )
 
     EDUCATION_CHOICES = (
-        (1,"初中"),
-        (2,"高中(中专)"),
-        (3,"大专"),
-        (4,"本科"),
-        (5,"本科以上"),
+        ("初中","初中"),
+        ("高中(中专)","高中(中专)"),
+        ("大专","大专"),
+        ("本科","本科"),
+        ("本科以上","本科以上"),
     )
 
     BOOL_CHOICES =(
@@ -61,10 +64,11 @@ class CompanyInfoForm(forms.ModelForm):
     company_business_scope = forms.CharField(required=False, label="经营范围", widget=forms.Textarea(attrs={'class':"form-control",'rows':"3"}))
     company_registered_capital = forms.CharField(required=False, label="注册资金", error_messages={'required':'注册资金不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     responsible_person =forms.CharField(required=False, label="法人/负责人姓名", error_messages={'required':'法人/负责人姓名不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
-    responsible_person_sex = forms.ChoiceField(required=False, label="性别", choices=SEX_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
-    responsible_person_age = forms.CharField(required=False, label="法人年龄", error_messages={'required':'法人年龄不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
-    responsible_person_politics_status = forms.ChoiceField(required=False, label="法人政治面貌", choices=POLITICS_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
-    responsible_person_education = forms.ChoiceField(required=False, label="法人文化程度", choices=EDUCATION_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
+    responsible_person_phone = forms.CharField(required=False, max_length=11, label="法人/负责人电话", error_messages={'required':'法人/负责人电话不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
+    responsible_person_sex = forms.ChoiceField(required=False, label="法人/负责人性别", choices=SEX_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
+    responsible_person_age = forms.CharField(required=False, label="法人/负责人年龄", error_messages={'required':'法人年龄不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
+    responsible_person_politics_status = forms.ChoiceField(required=False, label="法人/负责人政治面貌", choices=POLITICS_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
+    responsible_person_education = forms.ChoiceField(required=False, label="法人/负责人文化程度", choices=EDUCATION_CHOICES, widget=forms.RadioSelect(attrs={'class':"radio-inline "}))
     contact_name = forms.CharField(required=False, label="联系人姓名", error_messages={'required':'联系人姓名不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     contact_phone = forms.CharField(required=False, max_length=11, label="联系人电话", error_messages={'required':'联系人电话不能为空'},  widget=forms.TextInput(attrs={'class':"form-control"}))
     contact_email = forms.EmailField(required=False, label="Email地址", error_messages={'required':'email地址不能为空'}, widget=forms.EmailInput(attrs={'class':"form-control"}))
@@ -122,6 +126,23 @@ class CompanyInfoForm(forms.ModelForm):
             else:
                 raise forms.ValidationError('请输入正确的手机号码')
             return contact_phone
+
+    #效验法人手机号是否存在并且无误
+    def clean_responsible_person_phone(self):
+        responsible_person_phone = self.cleaned_data['responsible_person_phone']
+        pattern = re.compile(r'((\d{3,4}-)?\d{7,8})$|(1[3-9][0-9]{9})')
+
+        if responsible_person_phone == "":
+            return responsible_person_phone
+        else:
+            if pattern.match(responsible_person_phone) != None:
+                if CompanyInfo.objects.filter(responsible_person_phone=responsible_person_phone).exists():
+                    raise forms.ValidationError('您输入的手机号码已经存在')
+                else:
+                    self.cleaned_data['responsible_person_phone'] = responsible_person_phone
+            else:
+                raise forms.ValidationError('请输入正确的手机号码')
+            return responsible_person_phone
 
 
 class CompanyInfoOverHeadForm(forms.ModelForm):

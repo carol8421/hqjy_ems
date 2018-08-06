@@ -5,20 +5,64 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>搜索&nbsp;<b>{{query}}</b>&nbsp;结果如下：</h1>
-    <ul>
-        {%for item in page%}
-            <li>{{item.object.id}}--{{item.object.company_name|safe}}</li>
-        {%empty%}
-            <li>啥也没找到</li>
-        {%endfor%}
-    </ul>
-    <hr>
-    {%for pindex in page.paginator.page_range%}
-        {%if pindex == page.number%}
-            {{pindex}}&nbsp;&nbsp;
-        {%else%}
-            <a href="?q={{query}}&amp;page={{pindex}}">{{pindex}}</a>&nbsp;&nbsp;
-        {%endif%}
-    {%endfor%}
+
+    <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1">
+                    <div class="panel panel-primary">
+                            <div class="panel-heading">
+                            <h3 class="panel-title">搜索到关于&nbsp;<b>{{query}}</b>&nbsp;的 <b>{{page | length}}</b> 个结果如下：</h3>
+                            </div>
+                            <div class="panel-body  animated slideInDown">
+                                <div class="list-group">
+                                    {%for item in page%}
+                                    <a href="/mainsite/company-info-detail/{{item.object.id}}" class="list-group-item"><span class="glyphicon glyphicon-search" aria-hidden="true">&nbsp;<b>{{item.object.company_name|safe}}</b></span></a>&nbsp;&nbsp;&nbsp;
+                                    {%empty%}
+                                        啥也没找到
+                                    {%endfor%}
+                                </div>
+                                <hr>
+                                <div aria-label="Page navigation" align="center">
+                                        <ul class="pagination">
+
+                                        {# 判断是否有前一页 #}
+                                        {% if page.has_previous %}
+                                            <li>
+                                                <a href="?q={{query}}&amp;page={{page.previous_page_number}}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                            <li class="disabled"><span aria-hidden="true">&laquo;</span></li>
+                                        {% endif %}
+
+                                        {# 循环生成页码 #}
+                                        {%for pindex in page.paginator.page_range%}
+                                                {%if pindex == page.number%}
+                                                    <li class="active"><span> {{pindex}}</span></li>
+                                                {%else%}                                                
+                                                    <li> <a href="?q={{query}}&amp;page={{pindex}}">{{pindex}}</a></li>
+                                                {%endif%}
+                                        {%endfor%}
+
+                                        {# 判断是否有后一页 #}
+                                        {% if page.has_next %}
+                                        <li>
+                                            <a href="?q={{query}}&amp;page={{page.next_page_number }}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                        {% else %}
+                                            <li class="disabled"><span aria-hidden="true">&raquo;</span></li>
+                                        {% endif %}
+                                        </ul>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+    </div>
 {% endblock content %}
+    
+
+

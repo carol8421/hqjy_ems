@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}
+    工作台 | 查看企业详细信息
+{% endblock title %}
+
+{% block content %}
+
+{% for company_info in company_info %}
+<div class="panel panel-default" style="margin:2em">
+    <div class="panel-heading">
+        <h3>{{ company_info.company_name }}<small>  -- 详细信息</small>  <span><a href="{% url 'index_workbench' %}" type="button" class="btn btn-info">返回工作台</a></span></h3>             
+    </div>
+    <div class="panel-body">
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover animated slideInDown">
+            {# 行标记 -- 开始 #}
+            <tr>
+                <td>
+                    <dl class="dl-horizontal">
+                            <dt>
+                                    <dt>企业名称 : </dt>
+                                    <dd>{{ company_info.company_name }} <a href="" type="button" class="btn btn-danger btn-xs">修改企业信息</a></dd>
+                            </dt>
+                    </dl>
+                </td>
+
+                <td>
+                        <dl class="dl-horizontal">
+                                <dt>
+                                        <dt>企业归属地 : </dt>
+                                        <dd>{{ company_info.company_area }}</dd>
+                                </dt>
+                         </dl>
+                 </td>
+
+                <td>
+                        <dl class="dl-horizontal">
+                                <dt>
+                                        <dt>企业标签 : </dt>
+                                        <dd>{% for tags in company_overhead_info %}
+                                                {% for tag in tags.company_tag.all %}
+                                                <span class="label {% if tag.tag_important_level == 1 %}label-danger {% elif tag.tag_important_level == 2 %}label-info{% else %}label-warning{% endif %}" style="display: inline-block;">{{tag.tag_name}}</span>
+                                                {% endfor %}
+                                            {% endfor %} 
+                                        </dd>
+                                </dt>
+                        </dl>
+                </td>
+            </tr>
+             {# 行标记 -- 结束#}
+
+            {# 行标记 -- 开始 #}
+            <tr>
+                    <td>
+                        <dl class="dl-horizontal">
+                                <dt>
+                                        <dt>企业行业一级分类 : </dt>
+                                        <dd>{{ company_info.company_type }} </dd>
+                                </dt>
+                        </dl>
+                    </td>
+    
+                    <td>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>企业行业二级分类 : </dt>
+                                            <dd>{{ company_info.company_second_type }}</dd>
+                                    </dt>
+                             </dl>
+                     </td>
+    
+                    <td>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>社会统一信用代码证号 : </dt>
+                                            <dd>{{ company_info.company_IDcard }}</dd>
+                                    </dt>
+                            </dl>
+                    </td>
+                </tr>
+                {# 行标记 -- 结束 #}
+
+                {# 行标记 -- 开始 #}
+                <tr>
+                        <td colspan=3>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>经营范围 : </dt>
+                                            <dd>{{ company_info.company_business_scope }}</dd>
+                                    </dt>
+                            </dl>
+                        </td>
+                </tr>
+                {# 行标记 -- 结束 #}
+
+                {# 行标记 -- 开始 #}
+                <tr>
+                        <td>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>法人/负责人姓名 : </dt>
+                                            <dd>{{ company_info.responsible_person }} </dd>
+                                    </dt>
+                            </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>法人性别 : </dt>
+                                                <dd>{{ company_info.responsible_person_sex }}</dd>
+                                        </dt>
+                                </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>法人年龄 : </dt>
+                                                <dd>{{ company_info.responsible_person_age }}</dd>
+                                        </dt>
+                                </dl>
+                        </td>
+                </tr>
+                {# 行标记 -- 结束 #}
+
+                {# 行标记 -- 开始 #}
+                <tr>
+                        <td>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>法人/负责人政治面貌 : </dt>
+                                            <dd>{{ company_info.responsible_person_politics_status }} </dd>
+                                    </dt>
+                            </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>法人/负责人文化程度 : </dt>
+                                                <dd>{{ company_info.responsible_person_education }}</dd>
+                                        </dt>
+                                </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>法人/负责人联系电话 : </dt>
+                                                {% if user.is_superuser  %}
+                                                    <dd>{{ company_info.responsible_person_phone }}</dd>
+                                                {% else %}
+                                                    <dd>***********</dd>
+                                                {% endif %}
+                                        </dt>
+                                </dl>
+                        </td>
+                </tr>
+                {# 行标记 -- 结束 #}
+
+                {# 行标记 -- 开始 #}
+                <tr>
+                        <td>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>联系人姓名 : </dt>
+                                            <dd>{{ company_info.contact_name }} </dd>
+                                    </dt>
+                            </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>联系人电话 : </dt>
+                                                <dd>{{ company_info.contact_phone }}</dd>
+                                        </dt>
+                                </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>联系人email : </dt>
+                                                <dd>{{ company_info.contact_email }}</dd>
+                                        </dt>
+                                </dl>
+                        </td>
+                </tr>
+                {# 行标记 -- 结束 #}
+
+                {# 行标记 -- 开始 #}
+                <tr>
+                        <td>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>网站地址 : </dt>
+                                            <dd><a href="{{ company_info.company_web }}">{{ company_info.company_web }}</a></dd>
+                                    </dt>
+                            </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>通讯地址 : </dt>
+                                                <dd>{{ company_info.contact_address }}</dd>
+                                        </dt>
+                                </dl>
+                        </td>
+        
+                        <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>企业是否注销 : </dt>
+                                                <dd>
+                                                    {% if  company_info.company_cancel == 1 %}
+                                                        <span class="label label-danger">是</span>
+                                                    {% else %}
+                                                        <span class="label label-success">否</span>
+                                                    {% endif %}
+                                                    </dd>
+                                        </dt>
+                                </dl>
+                        </td>
+                </tr>
+                {# 行标记 -- 结束 #}
+                {% for com_hinfo in company_overhead_info  %}
+                    {# 行标记 -- 开始 #}
+                    <tr>
+                            <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>从业人员规模 : </dt>
+                                                <dd>{{ com_hinfo.company_employee }} </dd>
+                                        </dt>
+                                </dl>
+                            </td>
+            
+                            <td>
+                                    <dl class="dl-horizontal">
+                                            <dt>
+                                                    <dt>大专及以上学历人数 : </dt>
+                                                    <dd>{{ com_hinfo.company_senior_staff }}</dd>
+                                            </dt>
+                                    </dl>
+                            </td>
+            
+                            <td>
+                                    <dl class="dl-horizontal">
+                                            <dt>
+                                                    <dt>中级及以上职称人数 : </dt>
+                                                    <dd>{{ com_hinfo.company_job_title }}</dd>
+                                            </dt>
+                                    </dl>
+                            </td>
+                    </tr>
+                    {# 行标记 -- 结束 #}
+
+                    {# 行标记 -- 开始 #}
+                    <tr>
+                            <td>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>企业拥有专利个数 : </dt>
+                                                <dd>{{ com_hinfo.company_patents_number }} </dd>
+                                        </dt>
+                                </dl>
+                            </td>
+            
+                            <td>
+                                    <dl class="dl-horizontal">
+                                            <dt>
+                                                    <dt>企业年产值 (万元) : </dt>
+                                                    <dd>{{ com_hinfo.company_annual_income }}</dd>
+                                            </dt>
+                                    </dl>
+                            </td>
+            
+                            <td>
+                                   {# 此处无内容，占位用 #}
+                            </td>
+                    </tr>
+                    {# 行标记 -- 结束 #}
+
+                    {# 行标记 -- 开始 #}
+                    <tr>
+                        <td colspan=3>
+                            <dl class="dl-horizontal">
+                                    <dt>
+                                            <dt>主要产品/服务 : </dt>
+                                            <dd>{{ com_hinfo.company_product }}</dd>
+                                    </dt>
+                            </dl>
+                        </td>
+                    </tr>
+                    {# 行标记 -- 结束 #}
+
+                    {# 行标记 -- 开始 #}
+                    <tr>
+                            <td colspan=3>
+                                <dl class="dl-horizontal">
+                                        <dt>
+                                                <dt>备注 : </dt>
+                                                <dd>{{ com_hinfo.company_remark }}</dd>
+                                        </dt>
+                                </dl>
+                            </td>
+                        </tr>
+                        {# 行标记 -- 结束 #}
+                {% endfor %}
+                
+        </table>
+    </div>
+    </div>
+</div>  
+{% endfor %}
+{% endblock content %}

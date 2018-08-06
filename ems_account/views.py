@@ -18,8 +18,8 @@ from .forms import LoginForm
 from .models import UserPermissionProfile, UserLevel
 from hqjy_ems.check_system import check_system_open
 
-# Create your views here.
 
+#用户登录视图
 @check_system_open(redirect='/system_maintenance/')
 def user_login(request):
     context = {}
@@ -40,14 +40,11 @@ def user_login(request):
             user_profile.save()
 
             return HttpResponseRedirect( "/")
-            # print(user)
-            # user_level = UserPermissionProfile.objects.filter(user_id=user_id).values()[0].get('user_level_id')
-            # if user_level == 4:
-            #     return HttpResponseRedirect( "/mainsite/query/")
-            # else:
-            #     return HttpResponseRedirect("/mainsite/workbench")
     else:
-        login_form = LoginForm()
+        if request.user.is_authenticated:
+            return HttpResponseRedirect( "/")
+        else:
+            login_form = LoginForm()
     context['login_form'] = login_form
     return render(request, 'ems_account/login.html', context)
 
