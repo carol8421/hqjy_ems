@@ -10,6 +10,7 @@ from . import views
 
 urlpatterns = [
     path('query/', views.index_query, name='index_query'),
+    path('error/', views.page_error, name='page_error'),
     path('workbench/', views.index_workbench, name='index_workbench'),
     path('notification/<int:Internalcircular_pk>', views.notification_detail, name='notification_detail'),
     path('get-type-data/', views.get_company_type_data, name='get_company_type_data'),
@@ -19,4 +20,5 @@ urlpatterns = [
     path('query-company-info', views.query_company_info, name='query_company_info'),
     path('get-all-company-info', views.get_all_company_info, name='get_all_company_info'),
     path('company-info-detail/<int:ci_id>', views.company_info_detail, name='company_info_detail'),
+    path('company-info-modify/<int:ci_id>', views.company_info_modify, name='company_info_modify'),
 ]

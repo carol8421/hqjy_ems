@@ -1,13 +1,19 @@
 {% load staticfiles %}
-<form method='GET' action="/search/">
-  <div class="input-group">
-    <input type="text" name="q" class="form-control input-sm" placeholder="请输入需要查询的公司名称...">
-    <span class="input-group-btn">
-      <button type="submit" class="btn btn-success btn-sm">查询</button>
-    </span>
+<div class="row">
+  <div class="col-xs-6 col-xs-offset-3">
+    <form method='GET' action="/search/">
+      <div class="input-group">
+        <input type="text" name="q" class="form-control input-sm" placeholder="请输入公司名称、法人姓名、企业归属地、产业分类等信息进行查询...">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-success btn-sm">查询</button>
+        </span>
+      </div>
+    </form>
+    <p><h6>当前系统共收录企业数： <small>{{ all_company_info | length }}</small></h6></p>
   </div>
-</form>
-<p><h6>当前系统共收录企业数： <small>{{ all_company_info | length }}</small></h6></p>
+</div>
+
+
 
 {# 我是一条分割线 #}
 <hr> 
@@ -49,7 +55,7 @@
               <td>
                 <div class="btn-group" role="group">
                   <a type="button" class="btn btn-primary btn-xs" href="{% url 'company_info_detail' company_info.id %}">查看</a>
-                  <a type="button" class="btn btn-success btn-xs" href="#">修改</a>
+                  <a type="button" class="btn btn-success btn-xs" href="{% url 'company_info_modify' company_info.id %}">修改</a>
                   {% comment %} <a type="button" class="btn btn-danger btn-xs" href="#">删除</a> {% endcomment %}
                 </div>
               </td>

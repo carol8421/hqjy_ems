@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% load staticfiles %} {% block title %} 工作台 | 修改企业信息 {% endblock title %} {% block content %}
+<div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+        <div class="jumbotron">
+            <div class="container">
+                <h1>出错啦！</h1>
+                <p>请填写信息时，注意数据格式！</p>
+                <p>
+                    <span>
+                        <a class="btn btn-primary btn-lg" href="/" role="button">返回首页</a>
+                        <a class="btn btn-info btn-lg" href="{% url 'index_workbench' %}" role="button">返回工作台</a>
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -17,13 +17,13 @@
                     <div class="col-md-8 col-md-offset-2">
                        <p></p>
                     </div>
-                    <div class="col-md-8 col-md-offset-2 ">
+                    <div class="col-md-6 col-md-offset-3 ">
                     {% if userprofile.user_level_id == 4 %}
-                        <a type="button" class="btn btn-primary btn-lg btn-block animated zoomIn delay-1s" href="{% url 'index_query' %}">进入查询页</a>
+                        <a type="button" class="btn btn-default btn-lg btn-block animated zoomIn delay-1s" href="{% url 'index_query' %}">进入查询页</a>
                         <a type="button"  class="btn btn-danger btn-lg btn-block animated zoomIn delay-2s" data-toggle="modal" data-target="#myModal">注销</a></p>
                     {% else %}
-                        <a type="button" class="btn btn-primary btn-lg btn-block animated zoomIn delay-1s" href="{% url 'index_query' %}">进入查询页</a>
-                        <a type="button" class="btn btn-success btn-lg btn-block animated zoomIn delay-2s" href="{% url 'index_workbench' %}">进入工作台</a>
+                        <a type="button" class="btn btn-default btn-lg btn-block animated zoomIn delay-1s" href="{% url 'index_query' %}">进入查询页</a>
+                        <a type="button" class="btn btn-default btn-lg btn-block animated zoomIn delay-2s" href="{% url 'index_workbench' %}">进入工作台</a>
                         <a type="button"  class="btn btn-danger btn-lg btn-block animated zoomIn delay-5s" data-toggle="modal" data-target="#myModal">注销</a></p>
                     {% endif %}
                     </div>
@@ -35,7 +35,7 @@
                     </div>
                     {% if userprofile.user_level_id == 4 %}
                     {% else %}
-                    <div class="col-md-4 col-md-offset-4 animated bounceInUp">
+                    <div class="col-md-6 col-md-offset-3 animated bounceInUp">
                             {% include "ems_mainsite/notification.html" %}
                     </div>
                     {% endif %}

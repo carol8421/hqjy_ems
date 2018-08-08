@@ -117,6 +117,7 @@
                                     <!-- <option>-请选择-</option> -->
                                     <option v-for="ctype in c_type" v-bind:value="ctype.pk">{% verbatim %}{{ ctype.fields.company_type_name }}{% endverbatim %}</option>
                                 </select>
+                                <p class="text-warning"><small><span class="glyphicon glyphicon-warning-sign" aria-hidden="true">&nbsp;注意：企业一级分类录入后不可以修改，请认真选择</span></small></p>
                             </div>
                     </div>
                         
@@ -127,6 +128,7 @@
                             <select name="company_second_type" id="id_company_second_type" class="form-control">
                                 <option v-for="cstype_f in cs_type" v-bind:value="cstype_f.pk">{% verbatim %}{{cstype_f.fields.company_second_type_name}}{% endverbatim %}</option>
                             </select>
+                            <p class="text-warning"><small><span class="glyphicon glyphicon-warning-sign" aria-hidden="true">&nbsp;注意：企业二级分类录入后不可以修改，请认真选择</span></small></p>
                         </div>    
                     </div>
                 </div>
@@ -179,6 +181,15 @@
                         <div class="col-sm-7">
                             {{ company_info.responsible_person }}
                             <p class="text-danger">{{ company_info.responsible_person.errors.as_text }}</p>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <!-- select input-->
+                        <label class="col-sm-3 control-label" for="{{company_info.responsible_person_phone.id_for_label}}">{{company_info.responsible_person_phone.label}}</label>
+                        <div class="col-sm-7">
+                            {{ company_info.responsible_person_phone }}
+                            <p class="text-danger">{{ company_info.responsible_person_phone.errors.as_text }}</p>
                         </div>
                 </div>
 
