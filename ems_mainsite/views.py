@@ -397,11 +397,10 @@ def company_info_modify(request, ci_id):
             company_overhead_info.company_remark = company_overhead_info_cd['company_remark']
 
             #更新新tag
-            company_tags_obj = CompanyInfoOverHead.objects.filter(id__in=company_tag_list)
-            print(company_tags_obj)
+            #company_tags_obj = CompanyInfoOverHead.objects.filter(id__in=company_tag_list)
             company_overhead_info.company_tag.clear()
             company_overhead_info.company_tag.add(*company_tag_list)
-            print(company_overhead_info.company_tag.set)
+ 
 
 
             #开始写
