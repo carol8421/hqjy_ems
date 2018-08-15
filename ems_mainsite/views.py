@@ -218,9 +218,7 @@ def input_overhead_data_submit(request, ci_id):
     elif request.method == 'POST':
         company_overhead_info_form = CompanyInfoOverHeadForm(request.POST)
         company_tag_list = request.POST.getlist("company_tag")
-        print(company_tag_list)
-        print(company_overhead_info_form)
-        print(company_overhead_info_form.is_valid())
+
         if company_overhead_info_form.is_valid():
             new_company_oh_info_form = company_overhead_info_form.save(commit=False)
             new_company_oh_info_form.company_info_id_id = ci_id
@@ -235,6 +233,16 @@ def input_overhead_data_submit(request, ci_id):
                 new_company_oh_info_form.save()
 
             return HttpResponseRedirect(reverse('index_workbench'))
+        else:
+            context = {}
+            user_level = UserPermissionProfile.objects.filter(user=request.user).values()[0].get('user_level_id')
+            ci_id = ci_id
+            context['ci_id'] = ci_id
+            context['user_level'] = user_level
+            context['company_info'] = company_overhead_info_form
+            context ['company_info'] = company_overhead_info_form
+            return render(request, 'index_workbench.html', context)
+            
     else:
         pass 
 
